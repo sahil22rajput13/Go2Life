@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="onClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/glStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="17dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/glEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="17dp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="123dp"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_img1"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+
+
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/tvSearch"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/home_search"
+                    app:layout_constraintTop_toTopOf="@id/tvNotification"
+                    app:layout_constraintBottom_toBottomOf="@id/tvNotification"
+                    app:layout_constraintEnd_toStartOf="@id/tvNotification"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/tvNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/home_notification"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="20dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="@id/glStart"
+                    app:layout_constraintRight_toRightOf="@id/glEnd"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvNotification"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_home_fragment" />
+
+
+
+                <!--                <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator-->
+                <!--                    android:id="@+id/onBoardViewedDots"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_centerInParent="true"-->
+                <!--                    android:layout_marginTop="28dp"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@id/glEnd"-->
+                <!--                    app:layout_constraintStart_toStartOf="@id/glStart"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/vpOnBoardViewPager"-->
+                <!--                    app:spi_dotColor="@color/light_grey"-->
+                <!--                    app:spi_dotMinimumSize="4dp"-->
+                <!--                    app:spi_dotSelectedColor="#6246E8"-->
+                <!--                    app:spi_dotSelectedSize="15dp"-->
+                <!--                    app:spi_dotSize="15dp"-->
+                <!--                    />-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/homeProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

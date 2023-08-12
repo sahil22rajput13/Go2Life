@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="com.example.go2life.view.navigation.chats.ChatsFragment"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats" />
+    <fragment
+        android:id="@+id/jobFragment"
+        android:name="com.example.go2life.view.navigation.job.JobFragment"
+        android:label="fragment_job"
+        tools:layout="@layout/fragment_job" />
+    <fragment
+        android:id="@+id/marketFragment"
+        android:name="com.example.go2life.view.navigation.market.MarketFragment"
+        android:label="fragment_market"
+        tools:layout="@layout/fragment_market" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="MoreFragment"
+        android:label="fragment_more"
+        tools:layout="@layout/fragment_more" />
+    <fragment
+        android:id="@+id/reelsFragment"
+        android:name="com.example.go2life.view.navigation.reels.ReelsFragment"
+        android:label="fragment_reels"
+        tools:layout="@layout/fragment_reels" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.go2life.view.navigation.home.HomeFragment"
+        tools:layout="@layout/fragment_home"
+        android:label="HomeFragment" />
+</navigation>
