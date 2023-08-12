@@ -12,289 +12,295 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:background="@color/white"
-        android:padding="18dp">
+        android:layout_height="match_parent"
+        >
 
 
-        <!--        <com.google.android.material.card.MaterialCardView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:elevation="5dp"-->
-        <!--            android:background="@color/white"-->
-        <!--            app:cardCornerRadius="0dp"-->
-        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--            app:layout_constraintRight_toRightOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            app:strokeColor="#f6f6f6"-->
-        <!--            app:strokeWidth="2dp">-->
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/glStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="10dp" />
+                <!--        <com.google.android.material.card.MaterialCardView-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:elevation="5dp"-->
+                <!--            android:background="@color/white"-->
+                <!--            app:cardCornerRadius="0dp"-->
+                <!--            app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--            app:layout_constraintRight_toRightOf="parent"-->
+                <!--            app:layout_constraintTop_toTopOf="parent"-->
+                <!--            app:strokeColor="#f6f6f6"-->
+                <!--            app:strokeWidth="2dp">-->
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/glEnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="10dp" />
-
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ivProfile"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                app:layout_constraintStart_toStartOf="@id/glStart"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
-                android:layout_height="27dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="@string/kyranew_smi"
-                android:textAppearance="@style/kyranew_smi"
-                android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@id/ivProfile"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvGraphic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/no_this_is_a_business_profile"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@id/ivProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvName"
-                tools:ignore="SmallSp" />
-
-            <TextView
-                android:id="@+id/tvLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/kyranew_smi2"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@id/ivProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvGraphic"
-                tools:ignore="SmallSp" />
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/home_time"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center"
-                android:text="@string/kyranew_smi3"
-                android:textSize="7sp"
-                app:layout_constraintStart_toEndOf="@id/ivProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvLocation"
-                tools:ignore="SmallSp" />
-
-            <TextView
-                android:id="@+id/tvDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
-                android:layout_marginEnd="25dp"
-                android:background="@drawable/more_logout"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center"
-                android:text="@string/see_detail"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RelativeLayout
-                android:id="@+id/rlBottomBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="35dp"
-                android:background="@drawable/home_profile_bar"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvDetails">
-
-                <ImageView
-                    android:id="@+id/ivLike"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="27dp"
-                    android:background="@drawable/home_like_uncheck" />
-
-                <TextView
-                    android:id="@+id/tvLike"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clProfile"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignStart="@id/ivLike"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="30dp"
-                    android:gravity="center"
-                    android:text="@string/some_id"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:id="@+id/ivComment"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="112dp"
-                    android:background="@drawable/home_comment_uncheck" />
-
-                <TextView
-                    android:id="@+id/tvComment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@id/ivComment"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="30dp"
-                    android:gravity="center"
-                    android:text="@string/some_id"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:id="@+id/ivShare"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/home_share" />
-            </RelativeLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clCommentBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@id/glEnd"
-                app:layout_constraintStart_toStartOf="@id/glStart"
-                app:layout_constraintTop_toBottomOf="@id/rlBottomBar">
-
-                <TextView
-                    android:id="@+id/tvComments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="@string/comments"
-                    android:textColor="#6B40E1"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ivLines"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/tvCommentsLines"
-                    android:layout_width="100dp"
-                    android:layout_height="1dp"
-                    android:background="@drawable/path_4770"
-                    app:layout_constraintLeft_toLeftOf="@id/tvComments"
-                    app:layout_constraintRight_toRightOf="@id/tvComments"
-                    app:layout_constraintTop_toBottomOf="@id/tvComments" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
 
-                <ImageView
-                    android:id="@+id/ivLines"
-                    android:layout_width="2dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/chat_rectangle_bar"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/glStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="10dp" />
 
-                <TextView
-                    android:id="@+id/tvLikes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="@string/likes"
-                    android:textColor="#757575"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/ivLines"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/tvLikesLines"
-                    android:layout_width="35dp"
-                    android:layout_height="1dp"
-                    android:background="@drawable/path_4770"
-                    android:visibility="invisible"
-                    app:layout_constraintLeft_toLeftOf="@id/tvLikes"
-                    app:layout_constraintRight_toRightOf="@id/tvLikes"
-                    app:layout_constraintTop_toBottomOf="@id/tvLikes" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcCommentItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="@id/glEnd"
-                app:layout_constraintStart_toStartOf="@id/glStart"
-                app:layout_constraintTop_toBottomOf="@id/clCommentBar"
-                tools:itemCount="20"
-                tools:listitem="@layout/item_bottom_comments" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/glEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_end="10dp" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivProfile"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        app:layout_constraintStart_toStartOf="@id/glStart"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/kyranew_smi"
+                        android:textAppearance="@style/kyranew_smi"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@id/ivProfile"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvGraphic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/no_this_is_a_business_profile"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toEndOf="@id/ivProfile"
+                        app:layout_constraintTop_toBottomOf="@id/tvName"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/kyranew_smi2"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toEndOf="@id/ivProfile"
+                        app:layout_constraintTop_toBottomOf="@id/tvGraphic"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/tvTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/home_time"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="@string/kyranew_smi3"
+                        android:textSize="7sp"
+                        app:layout_constraintStart_toEndOf="@id/ivProfile"
+                        app:layout_constraintTop_toBottomOf="@id/tvLocation"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/tvDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="45dp"
+                        android:layout_marginEnd="25dp"
+                        android:background="@drawable/more_logout"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="@string/see_detail"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rlBottomBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="35dp"
+                        android:background="@drawable/home_profile_bar"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvDetails">
+
+                        <ImageView
+                            android:id="@+id/ivLike"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="27dp"
+                            android:background="@drawable/home_like_uncheck" />
+
+                        <TextView
+                            android:id="@+id/tvLike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/ivLike"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="30dp"
+                            android:gravity="center"
+                            android:text="@string/some_id"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/ivComment"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="112dp"
+                            android:background="@drawable/home_comment_uncheck" />
+
+                        <TextView
+                            android:id="@+id/tvComment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/ivComment"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="30dp"
+                            android:gravity="center"
+                            android:text="@string/some_id"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/ivShare"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp"
+                            android:background="@drawable/home_share" />
+                    </RelativeLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clCommentBar"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="10dp"
+                        android:padding="6dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@id/glEnd"
+                        app:layout_constraintStart_toStartOf="@id/glStart"
+                        app:layout_constraintTop_toBottomOf="@id/rlBottomBar">
+
+                        <TextView
+                            android:id="@+id/tvComments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="@string/comments"
+                            android:textColor="#6B40E1"
+                            android:textSize="17sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/ivLines"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/tvCommentsLines"
+                            android:layout_width="100dp"
+                            android:layout_height="1dp"
+                            android:background="@drawable/path_4770"
+                            app:layout_constraintLeft_toLeftOf="@id/tvComments"
+                            app:layout_constraintRight_toRightOf="@id/tvComments"
+                            app:layout_constraintTop_toBottomOf="@id/tvComments" />
+
+
+                        <ImageView
+                            android:id="@+id/ivLines"
+                            android:layout_width="2dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/chat_rectangle_bar"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvLikes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="@string/likes"
+                            android:textColor="#757575"
+                            android:textSize="17sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/ivLines"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/tvLikesLines"
+                            android:layout_width="35dp"
+                            android:layout_height="1dp"
+                            android:background="@drawable/path_4770"
+                            android:visibility="invisible"
+                            app:layout_constraintLeft_toLeftOf="@id/tvLikes"
+                            app:layout_constraintRight_toRightOf="@id/tvLikes"
+                            app:layout_constraintTop_toBottomOf="@id/tvLikes" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcCommentItem"
+                        android:layout_width="0dp"
+                        android:layout_height="700dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="@id/glEnd"
+                        app:layout_constraintStart_toStartOf="@id/glStart"
+                        app:layout_constraintTop_toBottomOf="@id/clCommentBar"
+                        tools:itemCount="20"
+                        tools:listitem="@layout/item_bottom_comments" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
             android:id="@+id/rlCommentSend"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_alignParentBottom="true">
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="50dp"
-                android:inputType="text"
+                android:layout_marginEnd="60dp"
                 android:background="@color/white"
                 android:hint="Your Comment...."
-                android:paddingTop="18dp"
-                android:textColor="#808080"
-                android:textSize="14sp" />
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -305,13 +311,13 @@
                 android:background="@drawable/send" />
         </RelativeLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@drawable/more_line"
-            android:shadowColor="#D1D1D1"
-            app:layout_constraintBottom_toTopOf="@id/rlCommentSend" />
 
+        <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/more_line"
+                    android:shadowColor="#D1D1D1"
+                    app:layout_constraintBottom_toTopOf="@id/rlCommentSend" />
         <!--        </com.google.android.material.card.MaterialCardView>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 

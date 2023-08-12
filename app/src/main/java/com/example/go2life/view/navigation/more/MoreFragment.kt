@@ -1,3 +1,5 @@
+package com.example.go2life.view.navigation.more
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

@@ -1,6 +1,4 @@
-package com.app.harho.utils
-
-import com.example.go2life.utils.Status
+package com.example.go2life.utils
 
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {

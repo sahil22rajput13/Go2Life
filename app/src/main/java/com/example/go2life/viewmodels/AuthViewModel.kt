@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.harho.utils.Resource
+import com.example.go2life.utils.Resource
 import com.example.go2life.model.city.CityPramModel
 import com.example.go2life.model.city.CityResponse
 import com.example.go2life.model.country.CountryResponse

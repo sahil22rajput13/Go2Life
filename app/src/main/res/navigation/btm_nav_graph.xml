@@ -20,7 +20,7 @@
         tools:layout="@layout/fragment_market" />
     <fragment
         android:id="@+id/moreFragment"
-        android:name="MoreFragment"
+        android:name="com.example.go2life.view.navigation.more.MoreFragment"
         android:label="fragment_more"
         tools:layout="@layout/fragment_more" />
     <fragment

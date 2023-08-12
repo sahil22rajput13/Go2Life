@@ -1,5 +1,6 @@
 package com.example.go2life.view.navigation.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.go2life.adapter.HomeFragmentRecyclerView
 import com.example.go2life.base.BaseFragment
 import com.example.go2life.databinding.FragmentHomeBinding
-import com.example.go2life.model.home.Body
+import com.example.go2life.databinding.LayoutBottomCommentsBinding
 import com.example.go2life.model.home.HomePramModel
 import com.example.go2life.viewmodels.HomeViewModel
 import com.example.go2life.viewmodels.ViewModelFactory
@@ -31,8 +32,26 @@ class HomeFragment() : BaseFragment() {
     }
 
 
+    object CallbackComment : HomeFragmentRecyclerView.RecyclerViewCommentCallback {
+        override fun onItemClick(
+            profilePic: String,
+            firstName: String,
+            location: String,
+            companyName: String,
+            createdAt: String
+        ) {
+            val bundle = Bundle()
+            bundle.putString("profilePic", profilePic)
+            bundle.putString("firstName", firstName)
+            bundle.putString("location", location)
+            bundle.putString("companyName", companyName)
+            bundle.putString("createdAt", createdAt)
+
+        }
+    }
+
     private fun homeApi() {
-        val adapter = HomeFragmentRecyclerView(requireContext())
+        val adapter = HomeFragmentRecyclerView(requireContext(), CallbackComment)
         binding.rvProfile.layoutManager = LinearLayoutManager(requireContext())
         binding.rvProfile.adapter = adapter
 
@@ -42,5 +61,6 @@ class HomeFragment() : BaseFragment() {
                     adapter.submitData(pagingData)
                 }
             }
+
     }
 }

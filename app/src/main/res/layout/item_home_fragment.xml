@@ -211,6 +211,7 @@
                     <ImageView
                         android:id="@+id/ivComment"
                         android:layout_width="22dp"
+                        android:onClick="@{onClick}"
                         android:layout_height="22dp"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
