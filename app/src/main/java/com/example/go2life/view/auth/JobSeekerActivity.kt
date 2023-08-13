@@ -34,10 +34,10 @@ import java.util.Locale
 
 class JobSeekerActivity : BaseActivity(), View.OnClickListener {
     lateinit var binding: ActivityJobSeekerBinding
-    var city: String = ""
-    var countryName: String = ""
-    var post_code: String = ""
-    val viewModel by viewModels<AuthViewModel> { ViewModelFactory(application, repository) }
+     var city: String = ""
+     var country: String = ""
+     var code: String = ""
+    private val viewModel by viewModels<AuthViewModel> { ViewModelFactory(application, repository) }
     private lateinit var currentPhotoPath: String
     private val cameraPermissionHandler = CameraPermissionHandler()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,9 +51,9 @@ class JobSeekerActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        city = intent.getStringExtra("selectedCity").toString()
-        countryName = intent.getStringExtra("selectedCountry").toString()
-        post_code = intent.getStringExtra("post_code").toString()
+        city = intent.getStringExtra("City").toString()
+        country = intent.getStringExtra("Country").toString()
+        code = intent.getStringExtra("Code").toString()
     }
 
     private fun observer() {
@@ -82,18 +82,21 @@ class JobSeekerActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0) {
             binding.btnLogin -> {
-                val profile_pic = binding.tvForgot.toString()
-                val job_title = binding.etName.text.toString()
-                val is_student = binding.etStudent.text.toString()
+                city = intent.getStringExtra("selectedCity").toString()
+                country = intent.getStringExtra("selectedCountry").toString()
+                code = intent.getStringExtra("post_code").toString()
+                val profilePic = binding.tvForgot.toString()
+                val jobTitle = binding.etName.text.toString()
+                val isStudent = binding.etStudent.text.toString()
                 val body = ProfilePramModel(
                     city,
                     company_title = "null",
-                    country = "null",
-                    countryName,
-                    is_student,
-                    job_title,
-                    post_code,
-                    profile_pic,
+                    country,
+                    country,
+                    isStudent,
+                    jobTitle,
+                    code,
+                    profilePic,
                     profile_type = "0",
                     town = "null"
                 )

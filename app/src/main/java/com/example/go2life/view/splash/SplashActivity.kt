@@ -40,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
             } else if (GetObjects.preference.getString(SharedPreference.Key.POSTCODE) == "") {
                 startActivity(Intent(this@SplashActivity, DetailActivity::class.java))
             } else {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                startActivity(Intent(this@SplashActivity, DetailActivity::class.java))
             }
         }
     }

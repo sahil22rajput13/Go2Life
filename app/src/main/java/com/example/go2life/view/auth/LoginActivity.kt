@@ -54,10 +54,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             SharedPreference.Key.USERID,
                             response.userDetails.id.toString()
                         )
-                        if (GetObjects.preference.getString(SharedPreference.Key.POSTCODE) == "") {
+                        if (response.userDetails.city == "" && response.userDetails.county == "null") {
                             startActivity(Intent(this@LoginActivity, DetailActivity::class.java))
                         } else {
-                            startActivity(Intent(this, MainActivity::class.java))
+                            startActivity(Intent(this, DetailActivity::class.java))
                         }
                     }
 

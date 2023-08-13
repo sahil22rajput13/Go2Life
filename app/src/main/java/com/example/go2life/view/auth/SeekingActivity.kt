@@ -13,8 +13,8 @@ class SeekingActivity : BaseActivity(), View.OnClickListener {
     lateinit var binding: ActivitySeekingBinding
     var seeker: String = ""
     var city: String = ""
-    var countryName: String = ""
-    var post_code: String = ""
+    var country: String = ""
+    var code: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySeekingBinding.inflate(layoutInflater)
@@ -25,9 +25,9 @@ class SeekingActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        city = intent.getStringExtra("selectedCity").toString()
-        countryName = intent.getStringExtra("selectedCountry").toString()
-        post_code = intent.getStringExtra("post_code").toString()
+        city = intent.getStringExtra("City").toString()
+        code = intent.getStringExtra("Code").toString()
+        country = intent.getStringExtra("Country").toString()
     }
 
     private fun seekerCheck() {
@@ -55,15 +55,15 @@ class SeekingActivity : BaseActivity(), View.OnClickListener {
                     GetObjects.preference.putString(SharedPreference.Key.ISRED, "isRed")
                     if (binding.CheckYes.isChecked) {
                         val intent = Intent(this, JobSeekerActivity::class.java)
-                        intent.putExtra("selectedCity", city)
-                        intent.putExtra("post_code", post_code)
-                        intent.putExtra("selectedCountry", countryName)
+                        intent.putExtra("City", city)
+                        intent.putExtra("Code", code)
+                        intent.putExtra("Country", country)
                         startActivity(intent)
                     } else if (binding.CheckNo.isChecked) {
                         val intent = Intent(this, CompanyActivity::class.java)
-                        intent.putExtra("selectedCity", city)
-                        intent.putExtra("post_code", post_code)
-                        intent.putExtra("selectedCountry", countryName)
+                        intent.putExtra("City", city)
+                        intent.putExtra("Code", code)
+                        intent.putExtra("Country", country)
                         startActivity(intent)
                     }
                 }

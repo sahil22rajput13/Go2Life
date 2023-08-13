@@ -8,8 +8,6 @@ import android.text.style.UnderlineSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.go2life.utils.gone
-import com.example.go2life.utils.visible
 import com.example.go2life.R
 import com.example.go2life.adapter.OnBoardingAdapter
 import com.example.go2life.base.GetObjects
@@ -17,6 +15,7 @@ import com.example.go2life.databinding.ActivityOnBoardBinding
 import com.example.go2life.model.OnBoardModel
 import com.example.go2life.utils.SharedPreference
 import com.example.go2life.utils.inVisible
+import com.example.go2life.utils.visible
 import com.example.go2life.view.auth.LoginActivity
 
 class OnBoardActivity : AppCompatActivity(), View.OnClickListener {
@@ -27,27 +26,12 @@ class OnBoardActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityOnBoardBinding.inflate(layoutInflater)
         binding.onClick = this
         setData()
-        positionCheck()
+        spannableSkip()
         setViewpager()
         setContentView(binding.root)
 
     }
 
-    private fun positionCheck() {
-        when (binding.vpOnBoardViewPager.currentItem) {
-            0 -> {
-                binding.btnOnBoard.text = StringBuilder("Next")
-            }
-
-            1 -> {
-                binding.btnOnBoard.text = StringBuilder("Next")
-            }
-
-            else -> {
-                binding.btnOnBoard.text = StringBuilder("Start")
-            }
-        }
-    }
 
     private fun spannableSkip() {
         val mString = "Skip"
@@ -85,43 +69,67 @@ class OnBoardActivity : AppCompatActivity(), View.OnClickListener {
         binding.vpOnBoardViewPager.adapter = OnBoardingAdapter(this, listData)
         binding.vpOnBoardViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.onBoardViewedDots.attachToPager(binding.vpOnBoardViewPager)
-        when (binding.vpOnBoardViewPager.currentItem) {
-            0 -> {
-                binding.btnOnBoard.text = StringBuilder("Next")
+        binding.vpOnBoardViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                spannableSkip()
+                when (binding.vpOnBoardViewPager.currentItem) {
+
+                    0 -> {
+                        binding.tvSkip.visible()
+                        binding.btnOnBoard.text = StringBuilder("Next")
+
+                    }
+                    1 -> {
+                        binding.tvSkip.visible()
+                        binding.btnOnBoard.text = StringBuilder("Next")
+
+                    }
+                    2 -> {
+                        binding.btnOnBoard.text = StringBuilder("Start")
+                        binding.tvSkip.inVisible()
+                    }
+
+                }
             }
-        }
-        binding.tvSkip.visible()
-        spannableSkip()
+        })
+
+
     }
 
     @SuppressLint("SetTextI18n")
     override fun onClick(p0: View?) {
+
+
         when (p0) {
             binding.tvSkip -> {
-                GetObjects.preference.putBoolean(SharedPreference.Key.ISLANDINGCOMPLETE,true)
+                GetObjects.preference.putBoolean(SharedPreference.Key.ISLANDINGCOMPLETE, true)
                 startActivity(Intent(this, LoginActivity::class.java))
             }
         }
 
         when (binding.vpOnBoardViewPager.currentItem) {
             0 -> {
-                binding.vpOnBoardViewPager.setCurrentItem(1, true)
                 binding.tvSkip.visible()
-                spannableSkip()
+                binding.btnOnBoard.text = StringBuilder("Next")
+                binding.vpOnBoardViewPager.setCurrentItem(1, true)
+
 
             }
 
             1 -> {
+                binding.tvSkip.visible()
                 if (binding.vpOnBoardViewPager.currentItem == 1) {
                     binding.btnOnBoard.text = StringBuilder("Start")
                 }
                 binding.vpOnBoardViewPager.setCurrentItem(2, true)
-                binding.tvSkip.inVisible()
-                spannableSkip()
+
             }
 
             2 -> {
-                GetObjects.preference.putBoolean(SharedPreference.Key.ISLANDINGCOMPLETE,true)
+                GetObjects.preference.putBoolean(SharedPreference.Key.ISLANDINGCOMPLETE, true)
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
 

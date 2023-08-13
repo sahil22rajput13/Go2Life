@@ -17,7 +17,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.example.go2life.viewmodels.ViewModelFactory
 import com.example.go2life.base.BaseActivity
 import com.example.go2life.base.MyApplication
 import com.example.go2life.databinding.ActivityCompanyBinding
@@ -27,6 +26,7 @@ import com.example.go2life.utils.Status
 import com.example.go2life.utils.toast
 import com.example.go2life.view.navigation.MainActivity
 import com.example.go2life.viewmodels.AuthViewModel
+import com.example.go2life.viewmodels.ViewModelFactory
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -35,21 +35,26 @@ import java.util.Locale
 
 
 class CompanyActivity : BaseActivity(), View.OnClickListener {
-    val viewModel by viewModels<AuthViewModel> { ViewModelFactory(application, repository) }
+    private val viewModel by viewModels<AuthViewModel> { ViewModelFactory(application, repository) }
     lateinit var binding: ActivityCompanyBinding
     private lateinit var currentPhotoPath: String
+     var code = ""
+     var city = ""
+     var country = ""
     private val cameraPermissionHandler = CameraPermissionHandler()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCompanyBinding.inflate(layoutInflater)
         binding.onClick = this
+        initData()
         observer()
-        bundleData()
         setContentView(binding.root)
     }
 
-    private fun bundleData() {
-
+    private fun initData() {
+        city = intent.getStringExtra("City").toString()
+        country = intent.getStringExtra("Country").toString()
+        code = intent.getStringExtra("Code").toString()
     }
 
     private fun validation(): Boolean {
@@ -67,13 +72,13 @@ class CompanyActivity : BaseActivity(), View.OnClickListener {
                 when (data.status) {
                     Status.SUCCESS -> {
                         MyApplication.hideLoader()
-                        val company_title = binding.etStudent.text.toString()
-                        val profile_type = "Company"
-                        val profile_pic = binding.tvForgot.toString()
+                        val companyTitle = binding.etStudent.text.toString()
+                        val profileType = "Company"
+                        val profilePic = binding.tvForgot.toString()
                         val bundle = Bundle().apply {
-                            putString("profile_type", profile_type)
-                            putString("profile_pic", profile_pic)
-                            putString("company_title", company_title)
+                            putString("profile_type", profileType)
+                            putString("profile_pic", profilePic)
+                            putString("company_title", companyTitle)
                         }
                         val intent = Intent(this, MainActivity::class.java)
                         intent.putExtras(bundle)
@@ -97,24 +102,24 @@ class CompanyActivity : BaseActivity(), View.OnClickListener {
         when (p0) {
             binding.btnLogin -> {
                 if (validation()) {
-                    val city = intent.getStringExtra("selectedCity").toString()
-                    val company_Tittle = binding.etStudent.text.toString()
-                    val countryName = intent.getStringExtra("selectedCountry").toString()
-                    val is_student = intent.getStringExtra("is_student").toString()
-                    val job_title = intent.getStringExtra("job_title").toString()
-                    val post_code = intent.getStringExtra("post_code").toString()
-                    val profile_pic = intent.getStringExtra("profile_pic").toString()
+                    city = intent.getStringExtra("selectedCity").toString()
+                    val companyTittle = binding.etStudent.text.toString()
+                    country = intent.getStringExtra("selectedCountry").toString()
+                    val isStudent = intent.getStringExtra("is_student").toString()
+                    val jobTitle = intent.getStringExtra("job_title").toString()
+                    code = intent.getStringExtra("postCode").toString()
+                    val profilePic = binding.tvForgot.toString()
                     val body = ProfilePramModel(
                         city,
-                        company_Tittle,
-                        country = "null",
-                        countryName,
-                        is_student,
-                        job_title,
-                        post_code,
-                        profile_pic,
+                        companyTittle,
+                        country,
+                        country,
+                        isStudent,
+                        jobTitle,
+                        code,
+                        profilePic,
                         profile_type = "1",
-                        town = "null"
+                        town = "null",
                     )
                     viewModel.onProfile(body)
                 }

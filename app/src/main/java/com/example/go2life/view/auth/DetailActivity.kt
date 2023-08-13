@@ -184,11 +184,11 @@ class DetailActivity : BaseActivity(), View.OnClickListener {
                 if (validation()) {
                     val selectedCity = binding.tvPassword.editText?.text.toString()
                     val selectedCountry = binding.tvName.editText?.text.toString()
-                    val postCode = binding.etEmail.text.toString()
+                    val postCode = binding.etEmail.editableText.toString()
                     val intent = Intent(this, SeekingActivity::class.java)
-                    intent.putExtra("selectedCity", selectedCity)
-                    intent.putExtra("post_code", postCode)
-                    intent.putExtra("selectedCountry", selectedCountry)
+                    intent.putExtra("City", selectedCity)
+                    intent.putExtra("Code", postCode)
+                    intent.putExtra("Country", selectedCountry)
                     startActivity(intent)
                 }
             }
