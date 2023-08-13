@@ -10,7 +10,6 @@ import com.example.go2life.databinding.ActivitySplashBinding
 import com.example.go2life.utils.SharedPreference
 import com.example.go2life.view.auth.DetailActivity
 import com.example.go2life.view.auth.LoginActivity
-import com.example.go2life.view.navigation.MainActivity
 import com.example.go2life.view.welcome.OnBoardActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -35,12 +34,12 @@ class SplashActivity : AppCompatActivity() {
                 finishAffinity()
             } else if (GetObjects.preference.getString(SharedPreference.Key.USERID) == ""
             ) {
-                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finishAffinity()
             } else if (GetObjects.preference.getString(SharedPreference.Key.POSTCODE) == "") {
                 startActivity(Intent(this@SplashActivity, DetailActivity::class.java))
             } else {
-                startActivity(Intent(this@SplashActivity, DetailActivity::class.java))
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             }
         }
     }
