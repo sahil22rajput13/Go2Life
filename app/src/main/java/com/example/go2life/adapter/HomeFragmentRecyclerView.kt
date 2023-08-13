@@ -1,31 +1,29 @@
 package com.example.go2life.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.go2life.R
-import com.example.go2life.R.layout.layout_bottom_comments
 import com.example.go2life.databinding.ItemHomeFragmentBinding
 import com.example.go2life.databinding.LayoutBottomCommentsBinding
 import com.example.go2life.model.home.Body
 import com.example.go2life.utils.divToMonthsAndDays
 import com.example.go2life.utils.gone
-import com.example.go2life.utils.toast
 import com.example.go2life.view.navigation.home.BottomCommentDialog
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
 class HomeFragmentRecyclerView(
-    val context: Context,
-    val callback: RecyclerViewCommentCallback
+    val context: Context
 ) : PagingDataAdapter<Body, RecyclerView.ViewHolder>(MovieComparator), View.OnClickListener {
     lateinit var bottomDialog1: LayoutBottomCommentsBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -34,7 +32,7 @@ class HomeFragmentRecyclerView(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), (parent.context as AppCompatActivity).supportFragmentManager
         )
     }
 
@@ -46,10 +44,17 @@ class HomeFragmentRecyclerView(
         }
     }
 
-    inner class ViewHolder(val binding: ItemHomeFragmentBinding) :
+    inner class ViewHolder(val binding: ItemHomeFragmentBinding, fragmentManager: FragmentManager) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.llComments.setOnClickListener() {
+                val body = getItem(bindingAdapterPosition)
+                body?.let { showBottomCommentDialog(it, fragmentManager) }
+            }
+        }
 
         fun bindData(body: Body) {
+
             val bodyImg = body.userdata
             val homeFragmentViewPager = HomeFragmentViewPager(context, body.userpostgallerydata)
             binding.vpProfile.adapter = homeFragmentViewPager
@@ -76,34 +81,24 @@ class HomeFragmentRecyclerView(
                 binding.tvLocation.text = body.location
             }
             getDateAndTime(body, binding)
-            itemView.setOnClickListener {
-                context.toast("click")
-                val bottomDialog = BottomCommentDialog()
-                bottomDialog.show(
-                    (binding.root.context as AppCompatActivity).supportFragmentManager,
-                    bottomDialog.tag
-                )
-                callback.onItemClick(
-                    bodyImg.profile_pic,
-                    bodyImg.first_name,
-                    body.location,
-                    body.company_name,
-                    body.created_at,
-
-                    )
-            }
 
         }
     }
 
-    interface RecyclerViewCommentCallback {
-        fun onItemClick(
-            profilePic: String,
-            firstName: String,
-            location: String,
-            companyName: String,
-            createdAt: String
-        )
+    private fun showBottomCommentDialog(body: Body, fragmentManager: FragmentManager) {
+        val bundle = Bundle().apply {
+            // Put the data you want to send to the dialog
+            putString("profilePic", body.userdata.profile_pic)
+            putString("firstName", body.userdata.first_name)
+            putString("location", body.location)
+            putString("companyName", body.company_name)
+            putString("createdAt", body.created_at)
+            putString("seekercategoryname", body.seekercategoryname)
+        }
+
+        val bottomDialog = BottomCommentDialog()
+        bottomDialog.arguments = bundle
+        bottomDialog.show(fragmentManager, bottomDialog.tag)
     }
 
 
