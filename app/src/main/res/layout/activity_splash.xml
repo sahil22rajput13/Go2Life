@@ -6,17 +6,27 @@
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg"
     tools:context=".view.splash.SplashActivity">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="0dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:adjustViewBounds="true"
+        android:layout_height="100dp"
         android:background="@drawable/logo_splash"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/glStart"
+        app:layout_constraintRight_toRightOf="@id/glEnd"
         app:layout_constraintTop_toTopOf="parent" />
 
 

@@ -6,7 +6,6 @@ import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
 import androidx.activity.viewModels
-import com.example.go2life.viewmodels.ViewModelFactory
 import com.example.go2life.base.BaseActivity
 import com.example.go2life.base.GetObjects
 import com.example.go2life.base.MyApplication
@@ -20,6 +19,7 @@ import com.example.go2life.utils.setClickableAndUnderlinedText
 import com.example.go2life.utils.toast
 import com.example.go2life.view.navigation.MainActivity
 import com.example.go2life.viewmodels.AuthViewModel
+import com.example.go2life.viewmodels.ViewModelFactory
 import java.util.regex.Pattern
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -54,8 +54,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             SharedPreference.Key.USERID,
                             response.userDetails.id.toString()
                         )
-
-                        startActivity(Intent(this, MainActivity::class.java))
+                        if (GetObjects.preference.getString(SharedPreference.Key.POSTCODE) == "") {
+                            startActivity(Intent(this@LoginActivity, DetailActivity::class.java))
+                        } else {
+                            startActivity(Intent(this, MainActivity::class.java))
+                        }
                     }
 
                     LOADING -> {
