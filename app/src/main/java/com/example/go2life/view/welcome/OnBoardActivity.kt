@@ -16,6 +16,7 @@ import com.example.go2life.base.GetObjects
 import com.example.go2life.databinding.ActivityOnBoardBinding
 import com.example.go2life.model.OnBoardModel
 import com.example.go2life.utils.SharedPreference
+import com.example.go2life.utils.inVisible
 import com.example.go2life.view.auth.LoginActivity
 
 class OnBoardActivity : AppCompatActivity(), View.OnClickListener {
@@ -115,7 +116,7 @@ class OnBoardActivity : AppCompatActivity(), View.OnClickListener {
                     binding.btnOnBoard.text = StringBuilder("Start")
                 }
                 binding.vpOnBoardViewPager.setCurrentItem(2, true)
-                binding.tvSkip.gone()
+                binding.tvSkip.inVisible()
                 spannableSkip()
             }
 

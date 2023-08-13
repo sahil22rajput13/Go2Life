@@ -46,10 +46,11 @@
 
                 <ImageView
                     android:id="@+id/ivLogin"
-                    android:layout_width="370dp"
+                    android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="50dp"
                     android:background="@drawable/go2life"
+                    app:layout_constraintBottom_toTopOf="@id/tvWelcome2"
                     app:layout_constraintEnd_toEndOf="@id/glEnd"
                     app:layout_constraintStart_toStartOf="@id/glStart"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -93,23 +94,23 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="59dp"
-                    android:backgroundTint="@color/white"
                     android:layout_marginTop="30dp"
+                    android:backgroundTint="@color/white"
                     android:hint="@string/select_country_region"
                     app:layout_constraintEnd_toEndOf="@id/glEnd"
                     app:layout_constraintStart_toStartOf="@id/glStart"
                     app:layout_constraintTop_toBottomOf="@id/tvWelcome3">
 
 
-                        <AutoCompleteTextView
-                            android:id="@+id/my_spinner_dropdown"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/white"
-                            android:inputType="none"
-                            />
+                    <AutoCompleteTextView
+                        android:id="@+id/my_spinner_dropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/white"
+                        android:inputType="none" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tvEmail"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -123,9 +124,9 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etEmail"
-                        android:inputType="number"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -139,12 +140,12 @@
                     app:layout_constraintStart_toStartOf="@id/glStart"
                     app:layout_constraintTop_toBottomOf="@id/tvName">
 
-                     <AutoCompleteTextView
+                    <AutoCompleteTextView
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
-                        android:inputType="none"
-                        android:layout_height="wrap_content" />
+                        android:inputType="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,6 +155,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="67dp"
+                    android:layout_marginBottom="30dp"
                     android:background="@drawable/gradient_bg"
                     android:fontFamily="@font/poppins_regular"
                     android:onClick="@{onClick}"
@@ -161,6 +163,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="@id/glStart"
                     app:layout_constraintRight_toRightOf="@id/glEnd"
                     app:layout_constraintTop_toBottomOf="@id/tvEmail" />

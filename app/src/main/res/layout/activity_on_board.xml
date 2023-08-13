@@ -70,7 +70,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnOnBoard"
-                    android:layout_width="369dp"
+                    android:layout_width="0dp"
                     android:onClick="@{onClick}"
                     android:textAllCaps="false"
                     android:layout_height="60dp"
@@ -80,6 +80,7 @@
                     android:text=""
                     android:textColor="@color/white"
                     android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@id/tvSkip"
                     app:layout_constraintLeft_toLeftOf="@id/glStart"
                     app:layout_constraintRight_toRightOf="@id/glEnd"
                     app:layout_constraintTop_toBottomOf="@id/onBoardViewedDots" />
@@ -92,6 +93,7 @@
                     android:visibility="gone"
                     android:layout_alignParentBottom="true"
                     android:layout_marginTop="29dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="44dp"
                     android:gravity="top"
                     android:onClick="@{onClick}"
