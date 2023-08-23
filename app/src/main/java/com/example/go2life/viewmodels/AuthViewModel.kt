@@ -4,17 +4,18 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.go2life.utils.Resource
 import com.example.go2life.model.city.CityPramModel
 import com.example.go2life.model.city.CityResponse
 import com.example.go2life.model.country.CountryResponse
 import com.example.go2life.model.login.LoginPramModel
 import com.example.go2life.model.login.LoginResponse
+import com.example.go2life.model.post.PostResponse
 import com.example.go2life.model.profile.ProfilePramModel
 import com.example.go2life.model.profile.ProfileResponse
 import com.example.go2life.model.signup.SignUpPramModel
 import com.example.go2life.model.signup.SignUpResponse
 import com.example.go2life.network.Repository
+import com.example.go2life.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,6 +27,7 @@ class AuthViewModel(val application: Application, val repository: Repository) : 
     val resultProfile = MutableLiveData<Resource<ProfileResponse>>()
     val resultCountry = MutableLiveData<Resource<CountryResponse>>()
     val resultCity = MutableLiveData<Resource<CityResponse>>()
+
 
 
     fun onCountry() {
@@ -177,6 +179,8 @@ class AuthViewModel(val application: Application, val repository: Repository) : 
             }
         }
     }
+
+
 
 
 }

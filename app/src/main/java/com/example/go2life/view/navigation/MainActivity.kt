@@ -1,21 +1,31 @@
 package com.example.go2life.view.navigation
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.go2life.utils.setTextColorToDefault
-import com.example.go2life.utils.setTextColorToPink
 import com.example.go2life.R
 import com.example.go2life.databinding.ActivityMainBinding
+import com.example.go2life.utils.gone
 import com.example.go2life.utils.setImageToImageView
+import com.example.go2life.utils.setTextColorToDefault
+import com.example.go2life.utils.setTextColorToPink
+import com.example.go2life.utils.visible
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding: ActivityMainBinding
-    lateinit var navController: NavController
-    lateinit var findNavHost: NavHostFragment
+    private lateinit var navController: NavController
+    private lateinit var findNavHost: NavHostFragment
+
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -23,12 +33,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         navSetup()
         defaultNav()
         binding.onClick = this
+        val permission = Manifest.permission.POST_NOTIFICATIONS
+        val requestCode = 123 // You can use any request code
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+        }
         setContentView(binding.root)
+
     }
 
     private fun defaultNav() {
         setTextColorToPink(binding.tvNavHome)
-        setImageToImageView(this,binding.ivHome,R.drawable.home_check)
+        setImageToImageView(this, binding.ivHome, R.drawable.home_check)
         navController.popBackStack(R.id.nav_home, true)
         navController.popBackStack(R.id.nav_market, true)
         navController.popBackStack(R.id.nav_jobs, true)
@@ -48,12 +69,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             binding.navHome -> {
-                setImageToImageView(this,binding.ivHome,R.drawable.home_check)
-                setImageToImageView(this,binding.ivMarket,R.drawable.marketplace_uncheck)
-                setImageToImageView(this,binding.ivJobs,R.drawable.jobs_uncheck)
-                setImageToImageView(this,binding.ivReels,R.drawable.reels_uncheck)
-                setImageToImageView(this,binding.ivChats,R.drawable.chat_uncheck)
-                setImageToImageView(this,binding.ivMore,R.drawable.more_uncheck)
+                setImageToImageView(this, binding.ivHome, R.drawable.home_check)
+                setImageToImageView(this, binding.ivMarket, R.drawable.marketplace_uncheck)
+                setImageToImageView(this, binding.ivJobs, R.drawable.jobs_uncheck)
+                setImageToImageView(this, binding.ivReels, R.drawable.reels_uncheck)
+                setImageToImageView(this, binding.ivChats, R.drawable.chat_uncheck)
+                setImageToImageView(this, binding.ivMore, R.drawable.more_uncheck)
                 setTextColorToPink(binding.tvNavHome)
                 setTextColorToDefault(binding.tvMarket)
                 setTextColorToDefault(binding.tvJobs)
@@ -70,12 +91,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             binding.navMarket -> {
-                setImageToImageView(this,binding.ivHome,R.drawable.home_uncheck)
-                setImageToImageView(this,binding.ivMarket,R.drawable.marketplace_check)
-                setImageToImageView(this,binding.ivJobs,R.drawable.jobs_uncheck)
-                setImageToImageView(this,binding.ivReels,R.drawable.reels_uncheck)
-                setImageToImageView(this,binding.ivChats,R.drawable.chat_uncheck)
-                setImageToImageView(this,binding.ivMore,R.drawable.more_uncheck)
+                setImageToImageView(this, binding.ivHome, R.drawable.home_uncheck)
+                setImageToImageView(this, binding.ivMarket, R.drawable.marketplace_check)
+                setImageToImageView(this, binding.ivJobs, R.drawable.jobs_uncheck)
+                setImageToImageView(this, binding.ivReels, R.drawable.reels_uncheck)
+                setImageToImageView(this, binding.ivChats, R.drawable.chat_uncheck)
+                setImageToImageView(this, binding.ivMore, R.drawable.more_uncheck)
                 setTextColorToPink(binding.tvMarket)
                 setTextColorToDefault(binding.tvNavHome)
                 setTextColorToDefault(binding.tvJobs)
@@ -92,12 +113,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             binding.navJobs -> {
-                setImageToImageView(this,binding.ivHome,R.drawable.home_uncheck)
-                setImageToImageView(this,binding.ivMarket,R.drawable.marketplace_uncheck)
-                setImageToImageView(this,binding.ivJobs,R.drawable.jobs_check)
-                setImageToImageView(this,binding.ivReels,R.drawable.reels_uncheck)
-                setImageToImageView(this,binding.ivChats,R.drawable.chat_uncheck)
-                setImageToImageView(this,binding.ivMore,R.drawable.more_uncheck)
+                setImageToImageView(this, binding.ivHome, R.drawable.home_uncheck)
+                setImageToImageView(this, binding.ivMarket, R.drawable.marketplace_uncheck)
+                setImageToImageView(this, binding.ivJobs, R.drawable.jobs_check)
+                setImageToImageView(this, binding.ivReels, R.drawable.reels_uncheck)
+                setImageToImageView(this, binding.ivChats, R.drawable.chat_uncheck)
+                setImageToImageView(this, binding.ivMore, R.drawable.more_uncheck)
                 setTextColorToPink(binding.tvJobs)
                 setTextColorToDefault(binding.tvMarket)
                 setTextColorToDefault(binding.tvNavHome)
@@ -114,12 +135,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             binding.navReels -> {
-                setImageToImageView(this,binding.ivHome,R.drawable.home_uncheck)
-                setImageToImageView(this,binding.ivMarket,R.drawable.marketplace_uncheck)
-                setImageToImageView(this,binding.ivJobs,R.drawable.jobs_uncheck)
-                setImageToImageView(this,binding.ivReels,R.drawable.reels_check)
-                setImageToImageView(this,binding.ivChats,R.drawable.chat_uncheck)
-                setImageToImageView(this,binding.ivMore,R.drawable.more_uncheck)
+                setImageToImageView(this, binding.ivHome, R.drawable.home_uncheck)
+                setImageToImageView(this, binding.ivMarket, R.drawable.marketplace_uncheck)
+                setImageToImageView(this, binding.ivJobs, R.drawable.jobs_uncheck)
+                setImageToImageView(this, binding.ivReels, R.drawable.reels_check)
+                setImageToImageView(this, binding.ivChats, R.drawable.chat_uncheck)
+                setImageToImageView(this, binding.ivMore, R.drawable.more_uncheck)
                 setTextColorToPink(binding.tvReels)
                 setTextColorToDefault(binding.tvMarket)
                 setTextColorToDefault(binding.tvJobs)
@@ -137,12 +158,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             binding.navChats -> {
-                setImageToImageView(this,binding.ivHome,R.drawable.home_uncheck)
-                setImageToImageView(this,binding.ivMarket,R.drawable.marketplace_uncheck)
-                setImageToImageView(this,binding.ivJobs,R.drawable.jobs_uncheck)
-                setImageToImageView(this,binding.ivReels,R.drawable.reels_uncheck)
-                setImageToImageView(this,binding.ivChats,R.drawable.chat_check)
-                setImageToImageView(this,binding.ivMore,R.drawable.more_uncheck)
+                setImageToImageView(this, binding.ivHome, R.drawable.home_uncheck)
+                setImageToImageView(this, binding.ivMarket, R.drawable.marketplace_uncheck)
+                setImageToImageView(this, binding.ivJobs, R.drawable.jobs_uncheck)
+                setImageToImageView(this, binding.ivReels, R.drawable.reels_uncheck)
+                setImageToImageView(this, binding.ivChats, R.drawable.chat_check)
+                setImageToImageView(this, binding.ivMore, R.drawable.more_uncheck)
                 setTextColorToPink(binding.tvChats)
                 setTextColorToDefault(binding.tvMarket)
                 setTextColorToDefault(binding.tvJobs)
@@ -165,12 +186,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 setTextColorToDefault(binding.tvReels)
                 setTextColorToDefault(binding.tvChats)
                 setTextColorToDefault(binding.tvNavHome)
-                setImageToImageView(this,binding.ivHome,R.drawable.home_uncheck)
-                setImageToImageView(this,binding.ivMarket,R.drawable.marketplace_uncheck)
-                setImageToImageView(this,binding.ivJobs,R.drawable.jobs_uncheck)
-                setImageToImageView(this,binding.ivReels,R.drawable.reels_uncheck)
-                setImageToImageView(this,binding.ivChats,R.drawable.chat_uncheck)
-                setImageToImageView(this,binding.ivMore,R.drawable.more_check)
+                setImageToImageView(this, binding.ivHome, R.drawable.home_uncheck)
+                setImageToImageView(this, binding.ivMarket, R.drawable.marketplace_uncheck)
+                setImageToImageView(this, binding.ivJobs, R.drawable.jobs_uncheck)
+                setImageToImageView(this, binding.ivReels, R.drawable.reels_uncheck)
+                setImageToImageView(this, binding.ivChats, R.drawable.chat_uncheck)
+                setImageToImageView(this, binding.ivMore, R.drawable.more_check)
 
                 navController.popBackStack(R.id.nav_home, true)
                 navController.popBackStack(R.id.nav_market, true)
@@ -181,5 +202,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 navController.navigate(R.id.moreFragment)
             }
         }
+    }
+
+    fun visibleIcon() {
+        binding.bar.visible()
+    }
+    fun goneIcon() {
+        binding.coBar.gone()
     }
 }

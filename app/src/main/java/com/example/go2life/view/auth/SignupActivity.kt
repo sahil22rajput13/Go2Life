@@ -43,9 +43,14 @@ class SignupActivity : BaseActivity(), View.OnClickListener {
                             SharedPreference.Key.TOKEN,
                             response?.token.toString()
                         )
+
                         GetObjects.preference.putString(
                             SharedPreference.Key.USERDETIALS,
                             response?.userDetails.toString()
+                        )
+                        GetObjects.preference.putString(
+                            SharedPreference.Key.USERID,
+                            response!!.userDetails.id.toString()
                         )
                         startActivity(Intent(this, DetailActivity::class.java))
                     }

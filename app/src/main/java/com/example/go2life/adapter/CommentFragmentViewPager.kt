@@ -7,16 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.go2life.databinding.ItemProfileViewpagerBinding
 
-class HomeFragmentViewPager(
+class CommentFragmentViewPager(
     private val context: Context,
-    val body: List<com.example.go2life.model.home.Userpostgallerydata>
-) : RecyclerView.Adapter<HomeFragmentViewPager.ViewHolder>() {
+    val body: List<com.example.go2life.model.post.Userpostgallerydata>
+) : RecyclerView.Adapter<CommentFragmentViewPager.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemProfileViewpagerBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(position: Int) {
-
             Glide.with(context).load(body[position].file_url).into(binding.ivProfile)
         }
     }

@@ -1,10 +1,16 @@
 package com.example.go2life.utils
 
+
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
@@ -14,28 +20,101 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+
+@SuppressLint("QueryPermissionsNeeded")
+fun Activity.takePhotoWithCamera(photoFile: File, requestCode: Int) {
+    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    intent.resolveActivity(packageManager)?.let {
+        val photoURI: Uri = FileProvider.getUriForFile(
+            this,
+            "com.example.go2life.fileprovider",
+            photoFile
+        )
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        startActivityForResult(intent, requestCode)
+    }
+}
+
+fun Activity.openGalleryPicker(requestCode: Int) {
+    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+    startActivityForResult(intent, requestCode)
+}
+fun Fragment.openKeyboardOnClick(view: View) {
+    view.setOnClickListener {
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+}
+fun Fragment.openKeyboard(view: View) {
+    val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    view.requestFocus()
+    inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+}
+fun Context.showCameraPermissionDialog(cameraPermissionHandler: CameraPermissionHandler) {
+    val alertDialogBuilder = AlertDialog.Builder(this)
+    alertDialogBuilder.setTitle("Camera Permission")
+    alertDialogBuilder.setMessage("This app needs camera permission to take photos. Please grant the permission in settings.")
+    alertDialogBuilder.setPositiveButton("Open Settings") { _, _ ->
+        cameraPermissionHandler.openAppSettings(this)
+    }
+    alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
+        dialog.dismiss()
+    }
+    alertDialogBuilder.setCancelable(false)
+    alertDialogBuilder.show()
+}
+
+fun Context.showCameraPermissionDialogAndContinue(
+    cameraPermissionHandler: CameraPermissionHandler,
+    action: () -> Unit
+) {
+    val alertDialogBuilder = AlertDialog.Builder(this)
+    alertDialogBuilder.setTitle("Camera Permission")
+    alertDialogBuilder.setMessage("This app needs camera permission to take photos. Please grant the permission in settings.")
+    alertDialogBuilder.setPositiveButton("Open Settings") { _, _ ->
+        cameraPermissionHandler.openAppSettings(this)
+    }
+    alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
+        dialog.dismiss()
+    }
+
+    alertDialogBuilder.setCancelable(false)
+    alertDialogBuilder.setOnDismissListener {
+        action.invoke()
+    }
+    alertDialogBuilder.show()
+}
+
 fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, message, duration).show()
 }
-fun setImageToImageView(context: Context ,imageView: ImageView, drawableResourceId: Int) {
+
+fun setImageToImageView(context: Context, imageView: ImageView, drawableResourceId: Int) {
     imageView.setImageDrawable(ContextCompat.getDrawable(context, drawableResourceId))
 }
 
 fun View.visible() {
     this.visibility = View.VISIBLE
 }
+
 fun setTextColorToPink(textView: TextView) {
     textView.setTextColor(Color.parseColor("#E20DA1"))
 }
+
 fun Long.divToMonthsAndDays(): Pair<Long, Long> {
     val daysInMonth = 30L // Assuming an average month has 30 days
     val months = this / (daysInMonth * DateUtils.DAY_IN_MILLIS)
@@ -179,12 +258,14 @@ fun createPlaceholderImage(
     }
     return drawable!!
 }
+
 fun String.underlineSpan(): SpannableString {
     val spannableString = SpannableString(this)
     val underlineSpan = UnderlineSpan()
     spannableString.setSpan(underlineSpan, 0, this.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannableString
 }
+
 fun String.underlineColorSpan(underlineColor: Int = Color.RED): SpannableString {
     val spannableString = SpannableString(this)
     val underlineSpan = UnderlineSpan()
@@ -195,6 +276,7 @@ fun String.underlineColorSpan(underlineColor: Int = Color.RED): SpannableString 
 
     return spannableString
 }
+
 fun SpannableString.underlineColorLineSpan(lineColor: Int) {
     val underlineSpan = UnderlineSpan()
     val colorSpan = ForegroundColorSpan(lineColor)
@@ -218,8 +300,18 @@ fun TextView.setClickableAndUnderlinedText(
             }
         }
 
-        spannableText.setSpan(clickableSpan, startIndex, startIndex + clickableText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannableText.setSpan(UnderlineSpan(), startIndex, startIndex + clickableText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableText.setSpan(
+            clickableSpan,
+            startIndex,
+            startIndex + clickableText.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableText.setSpan(
+            UnderlineSpan(),
+            startIndex,
+            startIndex + clickableText.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         text = spannableText
         movementMethod = LinkMovementMethod.getInstance()

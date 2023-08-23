@@ -32,5 +32,14 @@
         android:id="@+id/homeFragment"
         android:name="com.example.go2life.view.navigation.home.HomeFragment"
         tools:layout="@layout/fragment_home"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_comment"
+        android:id="@+id/commentFragment"
+        android:name="com.example.go2life.view.navigation.home.CommentFragment"
+        android:label="CommentFragment" />
 </navigation>

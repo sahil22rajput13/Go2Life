@@ -1,7 +1,6 @@
 package com.example.go2life.view.auth
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,40 +13,77 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
-import com.example.go2life.viewmodels.ViewModelFactory
 import com.example.go2life.base.BaseActivity
 import com.example.go2life.base.MyApplication
 import com.example.go2life.databinding.ActivityJobSeekerBinding
 import com.example.go2life.model.profile.ProfilePramModel
 import com.example.go2life.utils.CameraPermissionHandler
 import com.example.go2life.utils.Status.*
+import com.example.go2life.utils.openGalleryPicker
+import com.example.go2life.utils.showCameraPermissionDialog
+import com.example.go2life.utils.takePhotoWithCamera
 import com.example.go2life.utils.toast
 import com.example.go2life.view.navigation.MainActivity
 import com.example.go2life.viewmodels.AuthViewModel
+import com.example.go2life.viewmodels.ViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class JobSeekerActivity : BaseActivity(), View.OnClickListener {
-    lateinit var binding: ActivityJobSeekerBinding
-     var city: String = ""
-     var country: String = ""
-     var code: String = ""
+    private val CAMERA_PERMISSION_REQUEST = 101
+    private val GALLERY_PERMISSION_REQUEST = 102
+
+    private lateinit var binding: ActivityJobSeekerBinding
+    private var city: String = ""
+    private var country: String = ""
+    private var code: String = ""
     private val viewModel by viewModels<AuthViewModel> { ViewModelFactory(application, repository) }
     private lateinit var currentPhotoPath: String
     private val cameraPermissionHandler = CameraPermissionHandler()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityJobSeekerBinding.inflate(layoutInflater)
         binding.onClick = this
         initData()
         observer()
-        setContentView(binding.root)
+        selfCameraCheck()
 
+        setContentView(binding.root)
+    }
+
+    private fun selfCameraCheck() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_REQUEST
+            )
+        }
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                GALLERY_PERMISSION_REQUEST
+            )
+        }
     }
 
     private fun initData() {
@@ -57,34 +93,38 @@ class JobSeekerActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun observer() {
-        viewModel.resultProfile.observe(this) {
-            it.let { data ->
-                when (data.status) {
-                    SUCCESS -> {
-                        MyApplication.hideLoader()
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                    }
+        viewModel.resultProfile.observe(this) { data ->
+            when (data.status) {
+                SUCCESS -> {
+                    MyApplication.hideLoader()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }
 
-                    LOADING -> {
-                        MyApplication.showLoader(this)
-                    }
+                LOADING -> MyApplication.showLoader(this)
 
-                    ERROR -> {
-                        MyApplication.hideLoader()
-                        toast(data.message.toString())
-                    }
+                ERROR -> {
+                    MyApplication.hideLoader()
+                    toast(data.message.toString())
                 }
             }
         }
     }
 
-    override fun onClick(p0: View?) {
-        when (p0) {
+    override fun onClick(view: View?) {
+        when (view) {
+            binding.btnAddPhoto -> {
+                if (hasCameraPermission()) {
+                    showImagePickerDialog()
+                } else {
+                    openCamera()
+                }
+            }
+
             binding.btnLogin -> {
-                city = intent.getStringExtra("selectedCity").toString()
-                country = intent.getStringExtra("selectedCountry").toString()
-                code = intent.getStringExtra("post_code").toString()
+                city = intent.getStringExtra("City").toString()
+                country = intent.getStringExtra("Country").toString()
+                code = intent.getStringExtra("Code").toString()
                 val profilePic = binding.tvForgot.toString()
                 val jobTitle = binding.etName.text.toString()
                 val isStudent = binding.etStudent.text.toString()
@@ -101,23 +141,9 @@ class JobSeekerActivity : BaseActivity(), View.OnClickListener {
                     town = "null"
                 )
                 viewModel.onProfile(body)
-
             }
 
-            binding.ivLogin -> {
-                onBackPressed()
-            }
-
-            binding.btnAddPhoto -> {
-
-                if (hasCameraPermission()) {
-                    // User has the camera permission, proceed with opening camera or gallery
-                    showImagePickerDialog()
-                } else {
-                    // Camera permission is not granted, open app settings
-                    cameraPermissionHandler.openAppSettings(this)
-                }
-            }
+            binding.ivLogin -> onBackPressed()
         }
     }
 
@@ -141,37 +167,20 @@ class JobSeekerActivity : BaseActivity(), View.OnClickListener {
         builder.show()
     }
 
-    @SuppressLint("QueryPermissionsNeeded")
     private fun openCamera() {
-
-
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        takePictureIntent.resolveActivity(packageManager)?.let {
-            val photoFile: File? = try {
-                createImageFile()
-            } catch (ex: IOException) {
-                // Handle file creation error
-                null
-            }
-            photoFile?.let {
-                val photoURI: Uri = FileProvider.getUriForFile(
-                    this,
-                    "com.example.go2life.fileprovider",
-                    it
-                )
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            }
+        if (!hasCameraPermission()) {
+            showCameraPermissionDialog(this.cameraPermissionHandler)
+            return
         }
+        val photoFile = createImageFile()
+        takePhotoWithCamera(photoFile, REQUEST_IMAGE_CAPTURE)
     }
 
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, REQUEST_GALLERY_IMAGE)
+        openGalleryPicker(REQUEST_GALLERY_IMAGE)
     }
 
     private fun createImageFile(): File {
-        // Create an image file name
         val timeStamp: String =
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
@@ -180,42 +189,58 @@ class JobSeekerActivity : BaseActivity(), View.OnClickListener {
             ".jpg",
             storageDir
         ).apply {
-            // Save a file path for use with ACTION_VIEW intents
-
             currentPhotoPath = absolutePath
         }
     }
 
-    companion object {
-        private const val REQUEST_GALLERY_IMAGE = 100
-        private const val REQUEST_IMAGE_CAPTURE = 200
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
+    private suspend fun Activity.handleActivityResultWithCoroutines(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+        currentPhotoPath: String,
+        binding: ActivityJobSeekerBinding
+    ) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_GALLERY_IMAGE -> {
                     val selectedImageUri: Uri? = data?.data
                     selectedImageUri?.let {
-                        val bitmap: Bitmap? = MediaStore.Images.Media.getBitmap(
-                            this.contentResolver,
-                            it
-                        )
-                        binding.tvForgot.setImageBitmap(bitmap)
+                        val bitmap: Bitmap? = withContext(Dispatchers.IO) {
+                            MediaStore.Images.Media.getBitmap(contentResolver, it)
+                        }
+                        bitmap?.let {
+                            binding.tvForgot.setImageBitmap(it)
+                        }
                     }
                 }
 
                 REQUEST_IMAGE_CAPTURE -> {
-                    val imageBitmap: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
+                    val imageBitmap: Bitmap? = withContext(Dispatchers.IO) {
+                        BitmapFactory.decodeFile(currentPhotoPath)
+                    }
                     imageBitmap?.let {
                         binding.tvForgot.setImageBitmap(it)
                     }
                 }
             }
         }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            handleActivityResultWithCoroutines(
+                requestCode, resultCode, data,
+                currentPhotoPath, binding
+            )
+        }
+    }
+
+    companion object {
+        private const val REQUEST_GALLERY_IMAGE = 100
+        private const val REQUEST_IMAGE_CAPTURE = 200
     }
 
 }

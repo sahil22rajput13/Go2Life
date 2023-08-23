@@ -54,10 +54,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             SharedPreference.Key.USERID,
                             response.userDetails.id.toString()
                         )
-                        if (response.userDetails.city == "" && response.userDetails.county == "null") {
-                            startActivity(Intent(this@LoginActivity, DetailActivity::class.java))
+                        if (response.userDetails.city.isNullOrEmpty()) {
+                            if (response.userDetails.county.toString().isNullOrEmpty())
+                                startActivity(
+                                    Intent(
+                                        this@LoginActivity,
+                                        DetailActivity::class.java
+                                    )
+                                )
+                        } else if (response.userDetails.profile_pic.toString().isNullOrEmpty()) {
+                            startActivity(Intent(this, JobSeekerActivity::class.java))
                         } else {
-                            startActivity(Intent(this, DetailActivity::class.java))
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finishAffinity()
                         }
                     }
 

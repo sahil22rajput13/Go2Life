@@ -7,6 +7,13 @@ import com.example.go2life.model.home.HomePramModel
 import com.example.go2life.model.home.HomeResponse
 import com.example.go2life.model.login.LoginPramModel
 import com.example.go2life.model.login.LoginResponse
+import com.example.go2life.model.post.PostPramModel
+import com.example.go2life.model.post.PostResponse
+import com.example.go2life.model.postLiked.postLikedPramModel
+import com.example.go2life.model.postlikeandcommnet.postLikePramModel
+import com.example.go2life.model.postlikeandcommnet.postLikeResponse
+import com.example.go2life.model.postunlike.PostUnlikePramModel
+import com.example.go2life.model.postunlike.PostUnlikeResponse
 import com.example.go2life.model.profile.ProfilePramModel
 import com.example.go2life.model.profile.ProfileResponse
 import com.example.go2life.model.signup.SignUpPramModel
@@ -34,4 +41,16 @@ interface ApiInterface {
 
     @POST("users/postList")
     suspend fun onHome(@Body body: HomePramModel): Response<HomeResponse>
+
+    @POST("users/postDetail")
+    suspend fun onPost(@Body body: PostPramModel): Response<PostResponse>
+
+    @POST("users/postlikeComment")
+    suspend fun onPostLike(@Body body: postLikePramModel): Response<postLikeResponse>
+
+    @POST("users/postUnlike")
+    suspend fun onPostLike(@Body body: PostUnlikePramModel): Response<PostUnlikeResponse>
+
+    @POST("users/postLikeUserList")
+    suspend fun onPostLiked(@Body body: postLikedPramModel): Response<com.example.go2life.model.postLiked.postLikedResponse>
 }

@@ -5,4 +5,7 @@
 
     <color name="light_grey">#C0C0C0</color>
     <color name="txt_pink">#EF9B9B</color>
+    <color name="txt_purple">#6B40E1</color>
+    <color name="txt_grey">#757575</color>
+
 </resources>

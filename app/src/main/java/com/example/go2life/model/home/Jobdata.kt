@@ -25,7 +25,7 @@ data class Jobdata(
     val min_experience: String,
     val people_required: Int,
     val postcode: String,
-    val price: Int,
+    val price: Double,
     val price_currency: String,
     val price_duration: String,
     val qualification: String,

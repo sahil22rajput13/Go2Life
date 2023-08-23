@@ -10,6 +10,7 @@ import com.example.go2life.databinding.ActivitySplashBinding
 import com.example.go2life.utils.SharedPreference
 import com.example.go2life.view.auth.DetailActivity
 import com.example.go2life.view.auth.LoginActivity
+import com.example.go2life.view.navigation.MainActivity
 import com.example.go2life.view.welcome.OnBoardActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -26,20 +27,19 @@ class SplashActivity : AppCompatActivity() {
             if (GetObjects.preference.getBoolean(SharedPreference.Key.ISLANDINGCOMPLETE) == false) {
                 startActivity(Intent(this@SplashActivity, OnBoardActivity::class.java))
                 finishAffinity()
-            } else if (GetObjects.preference.getString(SharedPreference.Key.POSTCODE) == "" && GetObjects.preference.getString(
-                    SharedPreference.Key.TOKEN
-                ) != "" && GetObjects.preference.getString(SharedPreference.Key.USERID) == ""
-            ) {
-                startActivity(Intent(this@SplashActivity, DetailActivity::class.java))
-                finishAffinity()
             } else if (GetObjects.preference.getString(SharedPreference.Key.USERID) == ""
             ) {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finishAffinity()
-            } else if (GetObjects.preference.getString(SharedPreference.Key.POSTCODE) == "") {
+            }
+            else if (GetObjects.preference.getString(SharedPreference.Key.POSTCODE) == "" && GetObjects.preference.getString(
+                    SharedPreference.Key.TOKEN) != "" && GetObjects.preference.getString(SharedPreference.Key.USERID) == ""
+            ) {
                 startActivity(Intent(this@SplashActivity, DetailActivity::class.java))
-            } else {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                finishAffinity()
+            }
+            else if  (GetObjects.preference.getString(SharedPreference.Key.USERID) != ""){
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             }
         }
     }
