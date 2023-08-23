@@ -1,4 +1,4 @@
-package com.example.go2life.model.post
+package com.example.go2life.model.postDetail
 
 import com.example.go2life.model.home.Jobdata
 import com.example.go2life.model.home.Usercomment
@@ -25,7 +25,7 @@ data class Body(
     val seekercategoryname: String,
     val updated_at: Any,
     val user_id: Int,
-    val usercomment: List<Usercomment>,
+    val usercomment: ArrayList<Usercomment>,
     val userdata: Userdata,
     val userpostgallerydata: List<Userpostgallerydata>
 )

@@ -14,165 +14,166 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsProfile"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/rlCommentSend"
-            >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/glStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="0dp" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/glEnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="0dp" />
-
-            <ImageView
-                android:id="@+id/ivArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/seeking_back"
-                app:layout_constraintBottom_toBottomOf="@id/tvCommentHead"
-                app:layout_constraintRight_toLeftOf="@id/tvCommentHead"
-                app:layout_constraintTop_toTopOf="@id/tvCommentHead" />
-
-            <TextView
-                android:id="@+id/tvCommentHead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/poppins_bold"
-                android:paddingStart="30dp"
-                android:text="@string/comments"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHomeComment"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:itemCount="1"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_home_comments"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/clCommentBar"
-                app:layout_constraintTop_toBottomOf="@id/tvCommentHead" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
 
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clCommentBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="6dp"
-                app:layout_constraintEnd_toEndOf="@id/glEnd"
-                app:layout_constraintStart_toStartOf="@id/glStart"
-                app:layout_constraintTop_toBottomOf="@id/rvHomeComment">
-
-                <TextView
-                    android:id="@+id/tvComments"
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/glStart"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="@string/comments"
-                    android:clickable="true"
-                    android:textColor="#6B40E1"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ivLines"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:focusable="true" />
-
-                <ImageView
-                    android:id="@+id/tvCommentsLines"
-                    android:layout_width="100dp"
-                    android:layout_height="1dp"
-                    android:background="@drawable/path_4770"
-                    app:layout_constraintLeft_toLeftOf="@id/tvComments"
-                    app:layout_constraintRight_toRightOf="@id/tvComments"
-                    app:layout_constraintTop_toBottomOf="@id/tvComments" />
-
-
-                <ImageView
-                    android:id="@+id/ivLines"
-                    android:layout_width="2dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/chat_rectangle_bar"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintGuide_begin="0dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/glEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="0dp" />
+
+                <ImageView
+                    android:id="@+id/ivArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/seeking_back"
+                    app:layout_constraintBottom_toBottomOf="@id/tvCommentHead"
+                    app:layout_constraintRight_toLeftOf="@id/tvCommentHead"
+                    app:layout_constraintTop_toTopOf="@id/tvCommentHead" />
+
+                <TextView
+                    android:id="@+id/tvCommentHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingStart="30dp"
+                    android:text="@string/comments"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tvLikes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="@string/likes"
-                    android:textColor="#757575"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/ivLines"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/tvLikesLines"
-                    android:layout_width="35dp"
-                    android:layout_height="1dp"
-                    android:visibility="invisible"
-                    android:background="@drawable/path_4770"
-                    app:layout_constraintLeft_toLeftOf="@id/tvLikes"
-                    app:layout_constraintRight_toRightOf="@id/tvLikes"
-                    app:layout_constraintTop_toBottomOf="@id/tvLikes" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHomeComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@id/clCommentBar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvCommentHead"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_home_comments" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clCommentBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    app:layout_constraintEnd_toEndOf="@id/glEnd"
+                    app:layout_constraintStart_toStartOf="@id/glStart"
+                    app:layout_constraintTop_toBottomOf="@id/rvHomeComment">
+
+                    <TextView
+                        android:id="@+id/tvComments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/comments"
+                        android:textColor="#6B40E1"
+                        android:textSize="17sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/ivLines"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/tvCommentsLines"
+                        android:layout_width="100dp"
+                        android:layout_height="1dp"
+                        android:background="@drawable/path_4770"
+                        app:layout_constraintLeft_toLeftOf="@id/tvComments"
+                        app:layout_constraintRight_toRightOf="@id/tvComments"
+                        app:layout_constraintTop_toBottomOf="@id/tvComments" />
+
+
+                    <ImageView
+                        android:id="@+id/ivLines"
+                        android:layout_width="2dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/chat_rectangle_bar"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvLikes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/likes"
+                        android:textColor="#757575"
+                        android:textSize="17sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivLines"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/tvLikesLines"
+                        android:layout_width="35dp"
+                        android:layout_height="1dp"
+                        android:background="@drawable/path_4770"
+                        android:visibility="invisible"
+                        app:layout_constraintLeft_toLeftOf="@id/tvLikes"
+                        app:layout_constraintRight_toRightOf="@id/tvLikes"
+                        app:layout_constraintTop_toBottomOf="@id/tvLikes" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCommentItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@id/glEnd"
+                    app:layout_constraintStart_toStartOf="@id/glStart"
+                    app:layout_constraintTop_toBottomOf="@id/clCommentBar"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/item_bottom_comments" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCommentItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="@id/glEnd"
-                app:layout_constraintStart_toStartOf="@id/glStart"
-                app:layout_constraintTop_toBottomOf="@id/clCommentBar"
-                tools:itemCount="10"
-                tools:listitem="@layout/item_bottom_comments" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
         <RelativeLayout
             android:id="@+id/rlCommentSend"
             android:layout_width="match_parent"
@@ -180,8 +181,8 @@
             android:layout_alignParentBottom="true"
             android:background="@color/white"
             android:padding="10dp"
-            app:layout_constraintTop_toBottomOf="@id/nsProfile"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nsProfile">
 
             <EditText
                 android:id="@+id/etPostComment"
@@ -200,14 +201,14 @@
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/ivPostComment"
                 android:layout_width="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{onClick}"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="26dp"
-                android:background="@drawable/send" />
+                android:background="@drawable/send"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{onClick}" />
         </RelativeLayout>
 
 

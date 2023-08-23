@@ -12,12 +12,12 @@ import androidx.paging.cachedIn
 import androidx.paging.liveData
 import com.example.go2life.model.home.Body
 import com.example.go2life.model.home.HomePramModel
-import com.example.go2life.model.post.PostPramModel
-import com.example.go2life.model.post.PostResponse
-import com.example.go2life.model.postLiked.postLikedPramModel
-import com.example.go2life.model.postLiked.postLikedResponse
-import com.example.go2life.model.postlikeandcommnet.postLikePramModel
-import com.example.go2life.model.postlikeandcommnet.postLikeResponse
+import com.example.go2life.model.postDetail.PostPramModel
+import com.example.go2life.model.postDetail.PostResponse
+import com.example.go2life.model.postLikeUserList.postLikedPramModel
+import com.example.go2life.model.postLikeUserList.postLikedResponse
+import com.example.go2life.model.postlikeComment.postLikePramModel
+import com.example.go2life.model.postlikeComment.postLikeResponse
 import com.example.go2life.model.postunlike.PostUnlikePramModel
 import com.example.go2life.model.postunlike.PostUnlikeResponse
 import com.example.go2life.network.Repository
@@ -28,14 +28,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel(val application: Application, val repository: Repository) : ViewModel() {
-    val resultPost = MutableLiveData<Resource<PostResponse>>()
-    val resultPostLike = MutableLiveData<Resource<postLikeResponse>>()
-    val resultPostLiked = MutableLiveData<Resource<postLikedResponse>>()
+    val resultCommentPost = MutableLiveData<Resource<PostResponse>>()
+    val resultPostLikeAndComment = MutableLiveData<Resource<postLikeResponse>>()
+    val resultPostLikeUserList = MutableLiveData<Resource<postLikedResponse>>()
     val resultPostUnLike = MutableLiveData<Resource<PostUnlikeResponse>>()
-//    val resultLogin = MutableLiveData<Resource<LoginResponse>>()
-//    val resultProfile = MutableLiveData<Resource<ProfileResponse>>()
-//    val resultCountry = MutableLiveData<Resource<CountryResponse>>()
-//    val resultCity = MutableLiveData<Resource<CityResponse>>()
 
 
     fun onHome(body: HomePramModel): LiveData<PagingData<Body>> {
@@ -44,90 +40,91 @@ class HomeViewModel(val application: Application, val repository: Repository) : 
         }).liveData.cachedIn(viewModelScope)
     }
 
-    fun onPost(body: PostPramModel) {
-        resultPost.value = Resource.loading(null)
+    fun onCommentHomePost(body: PostPramModel) {
+        resultCommentPost.value = Resource.loading(null)
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = repository.onPost(body)
                 withContext(Dispatchers.Main) {
                     if (response.code() == 200) {
                         if (response.body()?.code == 200) {
-                            resultPost.value = Resource.success(
+                            resultCommentPost.value = Resource.success(
                                 response.body(),
                                 response.body()!!.message.toString()
                             )
                         } else {
-                            resultPost.value =
+                            resultCommentPost.value =
                                 Resource.error(null, response.body()?.message.toString())
                         }
                     } else {
-                        resultPost.value =
+                        resultCommentPost.value =
                             Resource.error(null, response.body()?.message.toString())
 
                     }
                 }
             } catch (t: Exception) {
                 withContext(Dispatchers.Main) {
-                    resultPost.value = Resource.error(null, t.message.toString())
+                    resultCommentPost.value = Resource.error(null, t.message.toString())
                 }
             }
         }
     }
 
-    fun onPostLike(body: postLikePramModel) {
-        resultPostLike.value = Resource.loading(null)
+    fun onPostLikeAndComment(body: postLikePramModel) {
+        resultPostLikeAndComment.value = Resource.loading(null)
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = repository.onPostLike(body)
                 withContext(Dispatchers.Main) {
                     if (response.code() == 200) {
                         if (response.body()?.code == 200) {
-                            resultPostLike.value = Resource.success(
+                            resultPostLikeAndComment.value = Resource.success(
                                 response.body(),
                                 response.body()!!.message.toString()
                             )
                         } else {
-                            resultPostLike.value =
+                            resultPostLikeAndComment.value =
                                 Resource.error(null, response.body()?.message.toString())
                         }
                     } else {
-                        resultPostLike.value =
+                        resultPostLikeAndComment.value =
                             Resource.error(null, response.body()?.message.toString())
 
                     }
                 }
             } catch (t: Exception) {
                 withContext(Dispatchers.Main) {
-                    resultPostLike.value = Resource.error(null, t.message.toString())
+                    resultPostLikeAndComment.value = Resource.error(null, t.message.toString())
                 }
             }
         }
     }
-    fun onPostLiked(body: postLikedPramModel) {
-        resultPostLike.value = Resource.loading(null)
+
+    fun onPostLikeUserList(body: postLikedPramModel) {
+        resultPostLikeUserList.value = Resource.loading(null)
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = repository.onPostLiked(body)
                 withContext(Dispatchers.Main) {
                     if (response.code() == 200) {
                         if (response.body()?.code == 200) {
-                            resultPostLiked.value = Resource.success(
+                            resultPostLikeUserList.value = Resource.success(
                                 response.body(),
                                 response.body()!!.message.toString()
                             )
                         } else {
-                            resultPostLiked.value =
+                            resultPostLikeUserList.value =
                                 Resource.error(null, response.body()?.message.toString())
                         }
                     } else {
-                        resultPostLiked.value =
+                        resultPostLikeUserList.value =
                             Resource.error(null, response.body()?.message.toString())
 
                     }
                 }
             } catch (t: Exception) {
                 withContext(Dispatchers.Main) {
-                    resultPostLiked.value = Resource.error(null, t.message.toString())
+                    resultPostLikeUserList.value = Resource.error(null, t.message.toString())
                 }
             }
         }
@@ -162,96 +159,4 @@ class HomeViewModel(val application: Application, val repository: Repository) : 
             }
         }
     }
-
-//    fun onCity(body: CityPramModel) {
-//        resultCity.value = Resource.loading(null)
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                val response = repository.onCity(body)
-//                withContext(Dispatchers.Main) {
-//                    if (response.code() == 200) {
-//                        if (response.body()?.code == 200) {
-//                            resultCity.value = Resource.success(
-//                                response.body(),
-//                                response.body()!!.message.toString()
-//                            )
-//                        } else {
-//                            resultCity.value =
-//                                Resource.error(null, response.body()?.message.toString())
-//                        }
-//                    } else {
-//                        resultCity.value =
-//                            Resource.error(null, response.body()?.message.toString())
-//
-//                    }
-//                }
-//            } catch (t: Exception) {
-//                withContext(Dispatchers.Main) {
-//                    resultCity.value = Resource.error(null, t.message.toString())
-//                }
-//            }
-//        }
-//    }
-
-//    fun onProfile(body: ProfilePramModel) {
-//        resultProfile.value = Resource.loading(null)
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                val response = repository.onProfile(body)
-//                withContext(Dispatchers.Main) {
-//                    if (response.code() == 200) {
-//                        if (response.body()?.code == 200) {
-//                            resultProfile.value = Resource.success(
-//                                response.body(),
-//                                response.body()!!.message.toString()
-//                            )
-//                        } else {
-//                            resultProfile.value =
-//                                Resource.error(null, response.body()?.message.toString())
-//                        }
-//                    } else {
-//                        resultProfile.value =
-//                            Resource.error(null, response.body()?.message.toString())
-//
-//                    }
-//                }
-//            } catch (t: Exception) {
-//                withContext(Dispatchers.Main) {
-//                    resultProfile.value = Resource.error(null, t.message.toString())
-//                }
-//            }
-//        }
-//    }
-
-//    fun onSignUp(body: SignUpPramModel) {
-//        resultSignUp.value = Resource.loading(null)
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                val response = repository.onSignUp(body)
-//                withContext(Dispatchers.Main) {
-//                    if (response.code() == 200) {
-//                        if (response.body()?.code == 200) {
-//                            resultSignUp.value = Resource.success(
-//                                response.body(),
-//                                response.body()!!.message.toString()
-//                            )
-//                        } else {
-//                            resultSignUp.value =
-//                                Resource.error(null, response.body()?.message.toString())
-//                        }
-//                    } else {
-//                        resultSignUp.value =
-//                            Resource.error(null, response.body()?.message.toString())
-//
-//                    }
-//                }
-//            } catch (t: Exception) {
-//                withContext(Dispatchers.Main) {
-//                    resultSignUp.value = Resource.error(null, t.message.toString())
-//                }
-//            }
-//        }
-//    }
-
-
 }

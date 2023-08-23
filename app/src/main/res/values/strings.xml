@@ -62,4 +62,6 @@
     <string name="likes">Likes</string>
     <string name="sadipscing_elitr_sed_diam_nonumy_eirmod_tempor_invidunt_ut_labore_et_dolore">sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore</string>
     <string name="your_comment">Your Comment....</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>

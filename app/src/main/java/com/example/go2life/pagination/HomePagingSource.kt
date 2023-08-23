@@ -10,11 +10,13 @@ class HomePagingSource(private val limit: String) : PagingSource<Int, Body>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Body> {
         return try {
+            val data = ArrayList<Body>()
             val currentPage = params.key ?: 0
             val response = GetApi.api.onHome(
                 HomePramModel(limit, currentPage.toString())
             )
-            val data = response.body()?.body.orEmpty()
+            data.clear()
+            data.addAll(response.body()?.body!!)
 
             val prevKey = if (currentPage > 0) currentPage - 1 else null
             val nextKey = if (data.isNotEmpty()) currentPage + 1 else null

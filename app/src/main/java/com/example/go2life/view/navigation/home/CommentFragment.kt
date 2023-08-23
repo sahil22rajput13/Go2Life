@@ -2,50 +2,53 @@ package com.example.go2life.view.navigation.home
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.go2life.R
-import com.example.go2life.adapter.CommentHomeAdapter
-import com.example.go2life.adapter.CommentLikesAdapter
-import com.example.go2life.adapter.CommentPostAdapter
-import com.example.go2life.adapter.CommentPostedAdapter
+import com.example.go2life.adapter.commentAdapter.CommentHomeAdapter
+import com.example.go2life.adapter.commentAdapter.PostLikeUserListAdapter
+import com.example.go2life.adapter.commentAdapter.UserCommentAdapter
 import com.example.go2life.base.BaseFragment
 import com.example.go2life.base.MyApplication
+import com.example.go2life.databinding.LayoutBottomCommentAlertBinding
 import com.example.go2life.databinding.LayoutBottomCommentsBinding
-import com.example.go2life.model.post.Body
-import com.example.go2life.model.post.PostPramModel
-import com.example.go2life.model.postLiked.postLikedPramModel
-import com.example.go2life.model.postlikeandcommnet.postLikePramModel
+import com.example.go2life.model.home.Usercomment
+import com.example.go2life.model.postDetail.Body
+import com.example.go2life.model.postDetail.PostPramModel
+import com.example.go2life.model.postLikeUserList.postLikedPramModel
+import com.example.go2life.model.postlikeComment.postLikePramModel
 import com.example.go2life.model.postunlike.PostUnlikePramModel
 import com.example.go2life.network.Repository
 import com.example.go2life.utils.Status.ERROR
 import com.example.go2life.utils.Status.LOADING
 import com.example.go2life.utils.Status.SUCCESS
 import com.example.go2life.utils.inVisible
-import com.example.go2life.utils.openKeyboard
 import com.example.go2life.utils.toast
 import com.example.go2life.utils.visible
 import com.example.go2life.viewmodels.HomeViewModel
 import com.example.go2life.viewmodels.ViewModelFactory
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CommentFragment : BaseFragment(), View.OnClickListener {
     lateinit var binding: LayoutBottomCommentsBinding
     private var postId: String = " "
-    private lateinit var commentPostedAdapter: CommentPostedAdapter
+    lateinit var bindingAlert: LayoutBottomCommentAlertBinding
+    private lateinit var userCommentAdapter: UserCommentAdapter
     private lateinit var commentHomeAdapter: CommentHomeAdapter
-    private lateinit var commentPostAdapter: CommentPostAdapter
-    private lateinit var commentLikesAdapter: CommentLikesAdapter
+    private lateinit var postLikeUserListAdapter: PostLikeUserListAdapter
     private var isLiked: Int = 0
+    private var mUserComment = ArrayList<Usercomment>()
+    private var mPostLikeUserList = ArrayList<com.example.go2life.model.postLikeUserList.Body>()
+    private var mHomeComment = ArrayList<Body>()
 
     private val viewModel by viewModels<HomeViewModel> {
         ViewModelFactory(
@@ -66,49 +69,87 @@ class CommentFragment : BaseFragment(), View.OnClickListener {
 
     }
 
-    @SuppressLint("ResourceAsColor", "NotifyDataSetChanged")
     private fun commentSelected() {
         binding.tvComments.setOnClickListener {
             with(binding) {
-                tvLikes.setTextColor(resources.getColor(R.color.txt_grey))
-                tvComments.setTextColor(resources.getColor(R.color.txt_purple))
+                tvLikes.setTextColor(ContextCompat.getColor(requireContext(), R.color.txt_grey))
+                tvComments.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.txt_purple
+                    )
+                )
                 tvLikesLines.inVisible()
                 tvCommentsLines.visible()
-                if (tvComments.isEnabled) {
-                    viewModel.onPost(PostPramModel(postId))
-                }
+                viewModel.onCommentHomePost(PostPramModel(postId))
+
             }
         }
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun likeSelected() {
         binding.tvLikes.setOnClickListener {
             with(binding) {
-                tvLikes.setTextColor(resources.getColor(R.color.txt_purple))
-                tvComments.setTextColor(resources.getColor(R.color.txt_grey))
+                tvLikes.setTextColor(ContextCompat.getColor(requireContext(), R.color.txt_purple))
+                tvComments.setTextColor(ContextCompat.getColor(requireContext(), R.color.txt_grey))
                 tvCommentsLines.inVisible()
                 tvLikesLines.visible()
-                viewModel.onPostLiked(postLikedPramModel(postId))
-
+                viewModel.onPostLikeUserList(postLikedPramModel(postId))
             }
 
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // Clear the FLAG_LAYOUT_NO_LIMITS window flag when the fragment is destroyed
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun observer() {
-        viewModel.resultPostLike.observe(viewLifecycleOwner) { data ->
+        viewModel.resultCommentPost.observe(viewLifecycleOwner) { data ->
+            data?.let {
+                when (data.status) {
+                    SUCCESS -> {
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            delay(1000)
+                            MyApplication.hideLoader()
+                        }
+
+                        if (binding.tvComments.isFocusable) {
+                            binding.tvComments.isFocusable = false
+                            mUserComment.clear()
+                            mUserComment.addAll(it.data!!.body.usercomment)
+                            userCommentAdapter()
+                        } else {
+                            mHomeComment.clear()
+                            mHomeComment.addAll(listOf(it.data!!.body))
+                            commentHomeAdapter()
+                            mUserComment.clear()
+                            mUserComment.addAll(it.data.body.usercomment)
+                            userCommentAdapter()
+                        }
+                    }
+
+                    LOADING -> {
+                        if (binding.tvComments.isFocusable) {
+                            binding.tvComments.isFocusable = false
+                            MyApplication.showLoader(requireContext())
+
+                        } else if (!binding.tvComments.isFocusable) {
+                            binding.tvComments.isFocusable = true
+                            MyApplication.hideLoader()
+                        }
+                    }
+
+                    ERROR -> handleError(data.message.toString())
+                }
+            }
+        }
+        viewModel.resultPostLikeAndComment.observe(viewLifecycleOwner) { data ->
             data.let {
                 when (data.status) {
                     SUCCESS -> {
-                        commentPostedAdapter.notifyDataSetChanged()
+                        if (it.data?.message == "Post Commented Successfully.") {
+                            viewModel.onCommentHomePost(PostPramModel(postId))
+                        } else if (binding.tvLikesLines.isVisible) {
+                            viewModel.onPostLikeUserList(postLikedPramModel(postId))
+                        }
                     }
 
                     LOADING -> {
@@ -125,7 +166,9 @@ class CommentFragment : BaseFragment(), View.OnClickListener {
             data.let {
                 when (data.status) {
                     SUCCESS -> {
-
+                        if (binding.tvLikesLines.isVisible) {
+                            viewModel.onPostLikeUserList(postLikedPramModel(postId))
+                        }
                     }
 
                     LOADING -> {
@@ -138,147 +181,103 @@ class CommentFragment : BaseFragment(), View.OnClickListener {
                 }
             }
         }
-        viewModel.resultPost.observe(viewLifecycleOwner) { data ->
-            data?.let {
-                when (data.status) {
-                    SUCCESS -> {
-                        MyApplication.hideLoader()
-                        commentHomeAdapter =
-                            CommentHomeAdapter(
-                                requireContext(),
-                                mList = listOf(it.data!!.body),
-                                commentCallbacks
-                            )
-                        binding.rvHomeComment.adapter = commentHomeAdapter
-                        commentStatus(it.data.body)
-                    }
 
-                    LOADING -> {
-                        if (binding.tvComments.isClickable && binding.tvComments.isFocusable) {
-                            binding.tvComments.isFocusable = false
-                            MyApplication.showLoader(requireContext())
-                        } else if (!binding.tvComments.isFocusable) {
-                            MyApplication.hideLoader()
-
-                        }
-
-                    }
-
-
-                    ERROR -> handleError(data.message.toString())
-                }
-            }
-        }
-        viewModel.resultPostLiked.observe(viewLifecycleOwner) { data ->
+        viewModel.resultPostLikeUserList.observe(viewLifecycleOwner) { data ->
             data.let {
                 when (data.status) {
                     SUCCESS -> {
-                        val bodyList =
-                            data.data?.body // Replace with the actual list of Body objects
-                        if (bodyList != null) {
-                            commentLikesAdapter = CommentLikesAdapter(requireContext(), bodyList)
-                            binding.rvCommentItem.adapter = commentLikesAdapter
-                        }
+                        // Adding data to the mLikes list
+                        mPostLikeUserList.clear()
+                        mPostLikeUserList.addAll(it.data!!.body)
+                        postLikeUserList()
+
                     }
 
-                    LOADING -> MyApplication.showLoader(requireContext())
+                    LOADING -> {
+
+                    }
+
                     ERROR -> handleError(data.message.toString())
                 }
             }
         }
     }
 
+    private fun commentHomeAdapter() {
+        commentHomeAdapter = CommentHomeAdapter(
+            requireContext(), mHomeComment,
+            commentCallbacks
+        )
+        binding.rvHomeComment.adapter = commentHomeAdapter
+    }
+
+    private fun postLikeUserList() {
+        postLikeUserListAdapter =
+            PostLikeUserListAdapter(requireContext(), mPostLikeUserList)
+        binding.rvCommentItem.adapter = postLikeUserListAdapter
+    }
+
+    private fun userCommentAdapter() {
+        userCommentAdapter =
+            UserCommentAdapter(requireContext(), mUserComment, callbackInfoMore)
+        binding.rvCommentItem.adapter = userCommentAdapter
+    }
 
     private val commentCallbacks = object :
         CommentHomeAdapter.CommentHomeAdapterCallbacks {
         override fun onClickLike(likeCount: Int, likeId: Int, isLiked: Int) {
             if (isLiked == 0) {
-                viewModel.onPostLike(postLikePramModel("0", likeId.toString(), "1"))
+                viewModel.onPostLikeAndComment(postLikePramModel("0", likeId.toString(), "1"))
+
             } else if (isLiked == 1) {
                 viewModel.onPostUnLike(PostUnlikePramModel("0", likeId.toString(), "1"))
             }
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun commentStatus(body: Body) {
-        commentPostedAdapter =
-            CommentPostedAdapter(requireContext(), comments = body.usercomment)
-        binding.rvCommentItem.adapter = commentPostedAdapter
-        commentPostedAdapter.notifyDataSetChanged()
+
+    private val callbackInfoMore = object : UserCommentAdapter.CommentPostedAdapterCallbacks {
+        @SuppressLint("InflateParams")
+        override fun onMoreInfoClicked(postId: Int) {
+            val bottomSheetDialog = BottomSheetDialog(requireContext())
+            val dialogView =
+                layoutInflater.inflate(R.layout.layout_bottom_comment_alert, null)
+            bindingAlert = LayoutBottomCommentAlertBinding.bind(dialogView)
+            bottomSheetDialog.setContentView(dialogView)
+            bottomSheetDialog.show()
+            bindingAlert.tvCancel.setOnClickListener {
+                bottomSheetDialog.dismiss()
+            }
+            bindingAlert.tvDelete.setOnClickListener {
+                // Handle the delete action here
+            }
+
+        }
+
     }
 
-    //    private fun likeAndUnlike() {
-//        with(binding) {
-//            llLikes.setOnClickListener {
-//                if (isLiked == 0)
-//                    viewModel.onPostLike(postLikePramModel("0", postId, "1"))
-//                else if (isLiked == 1)
-//                    viewModel.onPostUnLike(PostUnlikePramModel("0", postId, "1"))
-//            }
-//        }
-//    }
     private fun handleError(errorMessage: String) {
         MyApplication.hideLoader()
         requireContext().toast(errorMessage)
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        keyboardOpen()
-    }
-
-    private fun keyboardOpen() {
-        binding.nsProfile.viewTreeObserver.addOnGlobalLayoutListener {
-            val rect = Rect()
-            binding.root.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = binding.root.height
-            val keypadHeight = screenHeight - rect.bottom
-
-            if (keypadHeight > screenHeight * 0.15) {
-                // Keyboard is open
-                val scrollAmount = binding.rlCommentSend.bottom - rect.bottom
-                binding.nsProfile.smoothScrollTo(0, scrollAmount)
-            } else {
-                // Keyboard is closed
-                binding.nsProfile.scrollTo(0, 500)
-            }
-        }
-        openKeyboard(binding.etPostComment)
-        openSoftKeyboard()
-    }
-
-
-    private fun openSoftKeyboard() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            delay(500)
-            val inputMethodManager =
-                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-        }
-
-    }
-
-
     private fun setProfile() {
         postId = arguments?.getString("postId").toString()
         isLiked = arguments?.getInt("isLiked")!!
-        viewModel.onPost(PostPramModel(postId))
-
-
+        viewModel.onCommentHomePost(PostPramModel(postId))
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onClick(v: View?) = with(binding){
+    override fun onClick(v: View?) = with(binding) {
+        ivArrow.setOnClickListener {
+            findNavController().popBackStack()
+        }
         ivPostComment.setOnClickListener {
             val comment = binding.etPostComment.text.toString()
-            if (binding.etPostComment.text.toString() >= "0"){
-                viewModel.onPostLike(postLikePramModel(comment, postId, "2"))
-                commentPostedAdapter.notifyDataSetChanged()
-                viewModel.onPost(com.example.go2life.model.post.PostPramModel(postId))
+            if (binding.etPostComment.text.toString() >= "0") {
+                viewModel.onPostLikeAndComment(postLikePramModel(comment, postId, "2"))
+                binding.etPostComment.text.clear()
             }
-            binding.etPostComment.text.clear()
+
         }
     }
 }

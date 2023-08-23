@@ -1,4 +1,4 @@
-package com.example.go2life.adapter
+package com.example.go2life.adapter.homeAdapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -24,11 +24,11 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
-class HomeFragmentRecyclerView(
+class HomeFragmentAdapter(
     private val context: Context,
     private val callbacks: HomeFragmentRecyclerViewCallback
 ) :
-    PagingDataAdapter<Body, HomeFragmentRecyclerView.ViewHolder>(MovieComparator) {
+    PagingDataAdapter<Body, HomeFragmentAdapter.ViewHolder>(MovieComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemHomeFragmentBinding.inflate(
@@ -89,7 +89,7 @@ class HomeFragmentRecyclerView(
             val likeCount = body.likecount
 
             ivLike.setOnClickListener {
-                if (ivLike.isClickable && ivLike.isFocusable) {
+                if (ivLike.isFocusable) {
                     ivLike.isFocusable = false
                     if (isLiked == 1) {
                         tvLike.text = (likeCount).toString()
@@ -97,8 +97,9 @@ class HomeFragmentRecyclerView(
                         tvLike.text = (likeCount + 1).toString()
                         callbacks.onItemClick(
                             body.id,
-                            body.is_liked
+                            isLiked = 0
                         )
+
                     }
                     ivLike.setImageResource(R.drawable.like_check)
                 } else if (!ivLike.isFocusable) {
@@ -107,16 +108,10 @@ class HomeFragmentRecyclerView(
                         tvLike.text = (tvLike.text.toString().toInt() - 1).toString()
                         callbacks.onItemClick(
                             body.id,
-                            body.is_liked
+                            isLiked = 1
                         )
                     }
                     ivLike.setImageResource(R.drawable.home_like_uncheck)
-                }
-               else{
-                    callbacks.onItemClick(
-                        body.id,
-                        body.is_liked
-                    )
                 }
 
             }

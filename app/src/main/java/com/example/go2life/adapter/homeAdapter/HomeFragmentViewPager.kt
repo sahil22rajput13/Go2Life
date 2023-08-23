@@ -1,4 +1,4 @@
-package com.example.go2life.adapter
+package com.example.go2life.adapter.homeAdapter
 
 import android.content.Context
 import android.view.LayoutInflater

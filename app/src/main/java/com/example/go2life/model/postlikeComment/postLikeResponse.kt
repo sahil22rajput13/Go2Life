@@ -1,6 +1,6 @@
-package com.example.go2life.model.post
+package com.example.go2life.model.postlikeComment
 
-data class PostResponse(
+data class postLikeResponse(
     val body: Body,
     val code: Int,
     val message: String,

@@ -1,4 +1,4 @@
-package com.example.go2life.model.post
+package com.example.go2life.model.postDetail
 
 data class Userdata(
     val first_name: String,

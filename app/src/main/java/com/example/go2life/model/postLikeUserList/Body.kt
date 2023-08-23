@@ -1,4 +1,4 @@
-package com.example.go2life.model.postLiked
+package com.example.go2life.model.postLikeUserList
 
 data class Body(
     val created_at: String,

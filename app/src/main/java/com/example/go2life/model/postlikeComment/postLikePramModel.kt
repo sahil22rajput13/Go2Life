@@ -1,4 +1,4 @@
-package com.example.go2life.model.postlikeandcommnet
+package com.example.go2life.model.postlikeComment
 
 data class postLikePramModel(
     val message: String,

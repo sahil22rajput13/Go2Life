@@ -1,5 +1,6 @@
-package com.example.go2life.adapter
+package com.example.go2life.adapter.commentAdapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.go2life.R
 import com.example.go2life.databinding.ItemHomeCommentsBinding
-import com.example.go2life.model.post.Body
+import com.example.go2life.model.postDetail.Body
 import com.example.go2life.utils.divToMonthsAndDays
 import com.example.go2life.utils.setImageToImageView
 import java.text.SimpleDateFormat
@@ -20,7 +21,7 @@ import java.util.TimeZone
 class CommentHomeAdapter(
     private val context: Context,
     private val mList: List<Body>,
-    val callbacks: CommentHomeAdapterCallbacks
+    private val callbacks: CommentHomeAdapterCallbacks
 ) : RecyclerView.Adapter<CommentHomeAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemHomeCommentsBinding) :
@@ -51,9 +52,11 @@ class CommentHomeAdapter(
 
             if (body.commentcount >= 0) {
                 tvComment.text = body.commentcount.toString().takeUnless { it.isNullOrEmpty() }
+            }else {
+                tvComment.visibility = View.GONE
             }
             tvDesc.text =
-                body.description?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT) }
+                body.description.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT) }
             tvDesc.visibility =
                 if (body.description.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             tvGraphic.text =
@@ -66,49 +69,33 @@ class CommentHomeAdapter(
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun setupLikeButton(body: Body, binding: ItemHomeCommentsBinding) = with(binding) {
         val isLiked = body.is_liked
         val likeCount = body.likecount
         tvLike.text = likeCount.toString()
 
         ivLike.setOnClickListener {
-            if (ivLike.isClickable && ivLike.isFocusable) {
+            if (!ivLike.isFocusable) {
+                ivLike.isFocusable = true
+                tvLike.text = (tvLike.text.toString().toInt() - 1).toString()
+                callbacks.onClickLike(body.likecount, body.id, isLiked = 1)
+                ivLike.setImageResource(R.drawable.home_like_uncheck)
+            } else {
                 ivLike.isFocusable = false
                 if (isLiked == 1) {
                     tvLike.text = (likeCount).toString()
                 } else {
                     tvLike.text = (likeCount + 1).toString()
-                    callbacks.onClickLike(
-                        body.likecount,
-                        body.id,
-                        body.is_liked
-                    )
+                    callbacks.onClickLike(body.likecount, body.id, isLiked = 0)
                 }
-                ivLike.setImageResource(com.example.go2life.R.drawable.like_check)
-            } else if (!ivLike.isFocusable) {
-                ivLike.isFocusable = true
-                if (tvLike.text.toString().toInt() != 0) {
-                    tvLike.text = (tvLike.text.toString().toInt() - 1).toString()
-                    callbacks.onClickLike(
-                        body.likecount,
-                        body.id,
-                        body.is_liked
-                    )
-                }
-                ivLike.setImageResource(com.example.go2life.R.drawable.home_like_uncheck)
-            } else {
-                callbacks.onClickLike(
-                    body.likecount,
-                    body.id,
-                    body.is_liked
-                )
+                ivLike.setImageResource(R.drawable.like_check)
             }
-
         }
 
         setImageToImageView(
             context, ivLike,
-            if (isLiked == 0) com.example.go2life.R.drawable.home_like_uncheck else com.example.go2life.R.drawable.like_check
+            if (isLiked == 0) R.drawable.home_like_uncheck else R.drawable.like_check
         )
     }
 

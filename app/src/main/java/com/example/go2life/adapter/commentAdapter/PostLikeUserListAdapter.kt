@@ -1,4 +1,4 @@
-package com.example.go2life.adapter
+package com.example.go2life.adapter.commentAdapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.go2life.R
 import com.example.go2life.databinding.ItemBottomCommentsBinding
-import com.example.go2life.model.postLiked.Body
+import com.example.go2life.model.postLikeUserList.Body
+import com.example.go2life.utils.gone
 
-class CommentLikesAdapter(
+class PostLikeUserListAdapter(
     private val context: Context,
-    private val likes: List<Body>
-) : RecyclerView.Adapter<CommentLikesAdapter.ViewHolder>() {
+    private val likes: ArrayList<Body>
+) : RecyclerView.Adapter<PostLikeUserListAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemBottomCommentsBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -25,7 +26,9 @@ class CommentLikesAdapter(
                     .fitCenter()
                     .into(ivProfile)
 
-                tvName1.text = like.likedby
+                tvName.gone()
+                tvNameCenter.text = like.likedby
+                clComment.gone()
             }
         }
     }

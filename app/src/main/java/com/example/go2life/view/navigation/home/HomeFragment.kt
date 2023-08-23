@@ -11,12 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.go2life.R
-import com.example.go2life.adapter.HomeFragmentRecyclerView
+import com.example.go2life.adapter.homeAdapter.HomeFragmentAdapter
 import com.example.go2life.base.BaseFragment
-import com.example.go2life.base.MyApplication
 import com.example.go2life.databinding.FragmentHomeBinding
 import com.example.go2life.model.home.HomePramModel
-import com.example.go2life.model.postlikeandcommnet.postLikePramModel
+import com.example.go2life.model.postDetail.PostPramModel
+import com.example.go2life.model.postlikeComment.postLikePramModel
 import com.example.go2life.model.postunlike.PostUnlikePramModel
 import com.example.go2life.utils.Status.ERROR
 import com.example.go2life.utils.Status.LOADING
@@ -24,16 +24,15 @@ import com.example.go2life.utils.Status.SUCCESS
 import com.example.go2life.view.navigation.MainActivity
 import com.example.go2life.viewmodels.HomeViewModel
 import com.example.go2life.viewmodels.ViewModelFactory
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding? = null
-    private lateinit var homeFragmentRecyclerView: HomeFragmentRecyclerView
+    var postIdUser:Int = 0
+    private lateinit var homeFragmentAdapter: HomeFragmentAdapter
     private val viewModel by viewModels<HomeViewModel> {
         ViewModelFactory(application, repository)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,40 +42,39 @@ class HomeFragment : BaseFragment() {
         setupRecyclerView()
         observePostLikeResult()
         observePostUnLikeResult()
-        MyApplication.showLoader(requireContext())
         return binding!!.root
     }
 
     private fun setupRecyclerView() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            delay(800)
-            MyApplication.hideLoader()
-        }
-        homeFragmentRecyclerView = HomeFragmentRecyclerView(requireContext(), callbackHome)
+        homeFragmentAdapter = HomeFragmentAdapter(requireContext(), callbackHome)
         binding?.rvProfile?.layoutManager = LinearLayoutManager(requireContext())
-        binding?.rvProfile?.adapter = homeFragmentRecyclerView
+        binding?.rvProfile?.adapter = homeFragmentAdapter
         viewModel.onHome(HomePramModel("105", "0"))
             .observe(viewLifecycleOwner) { pagingData ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    homeFragmentRecyclerView.submitData(pagingData)
-
+                    homeFragmentAdapter.submitData(pagingData)
                 }
             }
     }
 
-    private val callbackHome = object : HomeFragmentRecyclerView.HomeFragmentRecyclerViewCallback {
+    private val callbackHome = object : HomeFragmentAdapter.HomeFragmentRecyclerViewCallback {
         override fun onItemCallback(postId: Int) {
             val bundle = Bundle().apply {
                 putString("postId", postId.toString())
             }
             (requireActivity() as MainActivity).goneIcon()
-            findNavController().navigate(R.id.action_homeFragment_to_commentFragment, bundle)
+            viewLifecycleOwner.lifecycleScope.launch {
+                findNavController().navigate(R.id.action_homeFragment_to_commentFragment, bundle)
+            }
+
         }
 
         override fun onItemClick(postId: Int, isLiked: Int) {
             viewLifecycleOwner.lifecycleScope.launch {
-                if (isLiked == 0)
-                    viewModel.onPostLike(postLikePramModel("0", postId.toString(), "1"))
+                if (isLiked == 0) {
+                    postIdUser = postId
+                    viewModel.onPostLikeAndComment(postLikePramModel("0", postId.toString(), "1"))
+                }
                 else if (isLiked == 1)
                     viewModel.onPostUnLike(PostUnlikePramModel("0", postId.toString(), "1"))
 
@@ -91,9 +89,10 @@ class HomeFragment : BaseFragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observePostLikeResult() {
-        viewModel.resultPostLike.observe(viewLifecycleOwner) { result ->
+        viewModel.resultPostLikeAndComment.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 SUCCESS -> {
+                    viewModel.onCommentHomePost(PostPramModel(postIdUser.toString()))
                 }
 
                 LOADING -> { /* Handle loading case */
@@ -110,6 +109,7 @@ class HomeFragment : BaseFragment() {
         viewModel.resultPostUnLike.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 SUCCESS -> {
+                    viewModel.onCommentHomePost(PostPramModel(postIdUser.toString()))
                 }
 
                 LOADING -> { /* Handle loading case */

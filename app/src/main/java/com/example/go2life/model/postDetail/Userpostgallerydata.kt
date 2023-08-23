@@ -1,4 +1,4 @@
-package com.example.go2life.model.post
+package com.example.go2life.model.postDetail
 
 data class Userpostgallerydata(
     val file_type: Int,

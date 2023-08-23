@@ -9,7 +9,6 @@ import com.example.go2life.model.city.CityResponse
 import com.example.go2life.model.country.CountryResponse
 import com.example.go2life.model.login.LoginPramModel
 import com.example.go2life.model.login.LoginResponse
-import com.example.go2life.model.post.PostResponse
 import com.example.go2life.model.profile.ProfilePramModel
 import com.example.go2life.model.profile.ProfileResponse
 import com.example.go2life.model.signup.SignUpPramModel

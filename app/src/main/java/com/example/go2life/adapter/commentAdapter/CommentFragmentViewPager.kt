@@ -1,4 +1,4 @@
-package com.example.go2life.adapter
+package com.example.go2life.adapter.commentAdapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.example.go2life.databinding.ItemProfileViewpagerBinding
 
 class CommentFragmentViewPager(
     private val context: Context,
-    val body: List<com.example.go2life.model.post.Userpostgallerydata>
+    val body: List<com.example.go2life.model.postDetail.Userpostgallerydata>
 ) : RecyclerView.Adapter<CommentFragmentViewPager.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemProfileViewpagerBinding) :
