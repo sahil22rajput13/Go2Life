@@ -64,4 +64,5 @@
     <string name="your_comment">Your Comment....</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="clear_all">Clear All</string>
 </resources>

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.go2life.R
 import com.example.go2life.databinding.ItemBottomCommentsBinding
-import com.example.go2life.model.home.Usercomment
+import com.example.go2life.model.homeData.home.Usercomment
 import com.example.go2life.utils.gone
 import com.example.go2life.utils.visible
 import java.text.SimpleDateFormat
@@ -44,7 +44,7 @@ class UserCommentAdapter(
                 tvDate.text = formattedDate
                 tvTime.text = formattedTime
                 ivMoreInfo.setOnClickListener {
-                    callbacks.onMoreInfoClicked(postId = comment.post_id)
+                    callbacks.onMoreInfoClicked(commentId = comment.id, postId = comment.post_id)
                 }
             }
         }
@@ -63,7 +63,7 @@ class UserCommentAdapter(
     }
 
     interface CommentPostedAdapterCallbacks {
-        fun onMoreInfoClicked(postId: Int)
+        fun onMoreInfoClicked(commentId: Int, postId: Int)
 
     }
 

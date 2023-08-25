@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.go2life.R
 import com.example.go2life.databinding.ItemBottomCommentsBinding
-import com.example.go2life.model.postLikeUserList.Body
+import com.example.go2life.model.comment.postLikeUserList.Body
 import com.example.go2life.utils.gone
 
 class PostLikeUserListAdapter(

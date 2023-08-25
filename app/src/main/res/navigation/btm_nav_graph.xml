@@ -36,10 +36,18 @@
         <action
             android:id="@+id/action_homeFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_comment"
         android:id="@+id/commentFragment"
         android:name="com.example.go2life.view.navigation.home.CommentFragment"
         android:label="CommentFragment" />
+    <fragment
+        android:id="@+id/notificationFragment"
+        tools:layout="@layout/layout_get_notification"
+        android:name="com.example.go2life.view.navigation.home.NotificationFragment"
+        android:label="NotificationFragment" />
 </navigation>

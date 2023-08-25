@@ -11,7 +11,7 @@ import com.example.go2life.base.BaseActivity
 import com.example.go2life.base.GetObjects
 import com.example.go2life.base.MyApplication
 import com.example.go2life.databinding.ActivitySignupBinding
-import com.example.go2life.model.signup.SignUpPramModel
+import com.example.go2life.model.auth.signup.SignUpPramModel
 import com.example.go2life.utils.SharedPreference
 import com.example.go2life.utils.Status
 import com.example.go2life.utils.setClickableAndUnderlinedText

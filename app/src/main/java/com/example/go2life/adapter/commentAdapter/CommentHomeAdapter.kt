@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.go2life.R
 import com.example.go2life.databinding.ItemHomeCommentsBinding
-import com.example.go2life.model.postDetail.Body
+import com.example.go2life.model.comment.postDetail.Body
 import com.example.go2life.utils.divToMonthsAndDays
 import com.example.go2life.utils.setImageToImageView
 import java.text.SimpleDateFormat
@@ -50,9 +50,14 @@ class CommentHomeAdapter(
             tvName.text = bodyImg.first_name
 
 
-            if (body.commentcount >= 0) {
+            if (body.commentcount == 0) {
+                tvComment.visibility = View.GONE
+            } else {
                 tvComment.text = body.commentcount.toString().takeUnless { it.isNullOrEmpty() }
-            }else {
+            }
+            if (body.likecount > 0) {
+                tvLike.text = body.likecount.toString().takeUnless { it.isNullOrEmpty() }
+            } else {
                 tvComment.visibility = View.GONE
             }
             tvDesc.text =

@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.go2life.databinding.ItemProfileViewpagerBinding
+import com.example.go2life.model.comment.postDetail.Userpostgallerydata
 
 class CommentFragmentViewPager(
     private val context: Context,
-    val body: List<com.example.go2life.model.postDetail.Userpostgallerydata>
+    val body: List<Userpostgallerydata>
 ) : RecyclerView.Adapter<CommentFragmentViewPager.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemProfileViewpagerBinding) :

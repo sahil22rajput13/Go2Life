@@ -31,7 +31,7 @@ class SeekingActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun seekerCheck() {
-        binding.CheckYes.setOnCheckedChangeListener() { _, b ->
+        binding.CheckYes.setOnCheckedChangeListener { _, b ->
             if (b) {
                 binding.CheckYes.isChecked = true
                 binding.CheckNo.isChecked = false

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.go2life.utils.MyFirebaseMessageService
 import com.example.go2life.R
 import com.example.go2life.base.GetObjects
 import com.example.go2life.databinding.ActivitySplashBinding
@@ -22,9 +23,10 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        startService(Intent(this, MyFirebaseMessageService::class.java))
         lifecycleScope.launch {
             delay(1000)
-            if (GetObjects.preference.getBoolean(SharedPreference.Key.ISLANDINGCOMPLETE) == false) {
+            if (!GetObjects.preference.getBoolean(SharedPreference.Key.ISLANDINGCOMPLETE)) {
                 startActivity(Intent(this@SplashActivity, OnBoardActivity::class.java))
                 finishAffinity()
             } else if (GetObjects.preference.getString(SharedPreference.Key.USERID) == ""
@@ -40,6 +42,7 @@ class SplashActivity : AppCompatActivity() {
             }
             else if  (GetObjects.preference.getString(SharedPreference.Key.USERID) != ""){
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finishAffinity()
             }
         }
     }

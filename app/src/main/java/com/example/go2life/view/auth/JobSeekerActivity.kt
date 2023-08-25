@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat
 import com.example.go2life.base.BaseActivity
 import com.example.go2life.base.MyApplication
 import com.example.go2life.databinding.ActivityJobSeekerBinding
-import com.example.go2life.model.profile.ProfilePramModel
+import com.example.go2life.model.auth.profile.ProfilePramModel
 import com.example.go2life.utils.CameraPermissionHandler
 import com.example.go2life.utils.Status.*
 import com.example.go2life.utils.openGalleryPicker

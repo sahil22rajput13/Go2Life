@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "897461232663",
+    "project_id": "go2life-92402",
+    "storage_bucket": "go2life-92402.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:897461232663:android:af0c37db9a8655b89ca852",
+        "android_client_info": {
+          "package_name": "com.example.go2life"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "897461232663-nvr4dqis831anfia48fmfhr1vifc02kb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJekqqFtnht_KjiXGV3YxmaM6E5IRHmz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "897461232663-nvr4dqis831anfia48fmfhr1vifc02kb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,15 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.go2life.R
 import com.example.go2life.databinding.ItemHomeFragmentBinding
-import com.example.go2life.model.home.Body
-import com.example.go2life.model.home.Userdata
-import com.example.go2life.model.home.Userpostgallerydata
+import com.example.go2life.model.homeData.home.Body
+import com.example.go2life.model.homeData.home.Userdata
+import com.example.go2life.model.homeData.home.Userpostgallerydata
 import com.example.go2life.utils.divToMonthsAndDays
 import com.example.go2life.utils.gone
 import com.example.go2life.utils.setImageToImageView
@@ -26,7 +27,8 @@ import java.util.TimeZone
 
 class HomeFragmentAdapter(
     private val context: Context,
-    private val callbacks: HomeFragmentRecyclerViewCallback
+    private val callbacks: HomeFragmentRecyclerViewCallback,
+    var lifecycleCoroutineScope: LifecycleCoroutineScope
 ) :
     PagingDataAdapter<Body, HomeFragmentAdapter.ViewHolder>(MovieComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -60,8 +62,12 @@ class HomeFragmentAdapter(
                 setupGraphic(body)
                 setupLocation(body)
                 setupTime(body.created_at)
+                ivMore.setOnClickListener {
+                    callbacks.onDeleteComment(body.id)
+                }
 
-                llComments.setOnClickListener {
+
+                ivComment.setOnClickListener {
                     callbacks.onItemCallback(body.id)
                 }
             }
@@ -78,7 +84,7 @@ class HomeFragmentAdapter(
         private fun setupPostGallery(postGalleryData: List<Userpostgallerydata>) = with(binding) {
             if (postGalleryData.isNullOrEmpty()) vpProfile.gone() else vpProfile.apply {
                 visible()
-                adapter = HomeFragmentViewPager(context, postGalleryData)
+                adapter = HomeFragmentViewPager(context,postGalleryData,lifecycleCoroutineScope)
                 ViewedDots.attachToPager(vpProfile)
             }
         }
@@ -129,12 +135,20 @@ private fun setupName(profileData: Userdata) = with(binding) {
 }
 
 private fun setupLikeCommentCounts(body: Body) = with(binding) {
-    tvLike.text = body.likecount.toString().takeUnless { it.isNullOrEmpty() }
-    tvComment.text = body.commentcount.toString().takeUnless { it.isNullOrEmpty() }
+    if (body.likecount > 0) {
+        tvLike.text = body.likecount.toString().takeUnless { it.isNullOrEmpty() }
+    }else {
+        tvComment.visibility = View.GONE
+    }
+    if (body.commentcount > 0) {
+        tvComment.text = body.commentcount.toString().takeUnless { it.isNullOrEmpty() }
+    }else {
+        tvComment.visibility = View.GONE
+    }
 }
 
 private fun setupDescription(body: Body) = with(binding) {
-    val description = body.description ?: body.jobdata?.job_description ?: ""
+    val description = body.description
     val formattedDescription =
         HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_COMPACT)
     tvDesc.text = formattedDescription
@@ -142,13 +156,13 @@ private fun setupDescription(body: Body) = with(binding) {
 }
 
 private fun setupGraphic(body: Body) = with(binding) {
-    val graphicText = body.company_name ?: body.seekercategoryname ?: ""
+    val graphicText = body.company_name
     tvGraphic.text = graphicText
     tvGraphic.visibility = if (graphicText.isNullOrEmpty()) View.GONE else View.VISIBLE
 }
 
 private fun setupLocation(body: Body) = with(binding) {
-    val location = body.location ?: ""
+    val location = body.location
     tvLocation.text = location
     tvLocation.visibility = if (location.isNullOrEmpty()) View.GONE else View.VISIBLE
 }
@@ -184,6 +198,7 @@ private fun formatTimeDifference(createdAtDate: Long): String {
 interface HomeFragmentRecyclerViewCallback {
     fun onItemCallback(postId: Int)
     fun onItemClick(postId: Int, isLiked: Int)
+    fun onDeleteComment(postId: Int)
 }
 
 object MovieComparator : DiffUtil.ItemCallback<Body>() {

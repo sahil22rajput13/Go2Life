@@ -10,11 +10,12 @@ import com.example.go2life.base.BaseActivity
 import com.example.go2life.base.GetObjects
 import com.example.go2life.base.MyApplication
 import com.example.go2life.databinding.ActivityLoginBinding
-import com.example.go2life.model.login.LoginPramModel
+import com.example.go2life.model.auth.login.LoginPramModel
 import com.example.go2life.utils.SharedPreference
 import com.example.go2life.utils.Status.ERROR
 import com.example.go2life.utils.Status.LOADING
 import com.example.go2life.utils.Status.SUCCESS
+import com.example.go2life.utils.Utility
 import com.example.go2life.utils.setClickableAndUnderlinedText
 import com.example.go2life.utils.toast
 import com.example.go2life.view.navigation.MainActivity
@@ -104,6 +105,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun spannableText() {
+
         binding.tvSignup.setClickableAndUnderlinedText(
             "Don't have any account ? Sign up",
             "Sign up",
@@ -113,11 +115,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0) {
             binding.btnLogin -> {
+                val deviceToken = Utility.getDeviceToken().toString()
                 if (validation()) {
                     val email = binding.etEmail.text.toString()
                     val password = binding.etPassword.text.toString()
                     val body = LoginPramModel(
-                        deviceToken = "1234@1234",
+                        deviceToken,
                         deviceType = "android",
                         email,
                         password

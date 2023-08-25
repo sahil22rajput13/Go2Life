@@ -37,7 +37,7 @@ class MyApplication : Application() {
                 mLoader = Dialog(context)
                 mLoader!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 mLoader!!.setContentView(R.layout.layout_progrzess_dialog)
-                Objects.requireNonNull(mLoader!!.window)!!.setBackgroundDrawable(
+                Objects.requireNonNull(mLoader!!.window)?.setBackgroundDrawable(
                     ColorDrawable(
                         Color.TRANSPARENT
                     )

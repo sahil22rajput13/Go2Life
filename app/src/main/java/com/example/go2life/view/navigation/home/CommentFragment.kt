@@ -19,12 +19,13 @@ import com.example.go2life.base.BaseFragment
 import com.example.go2life.base.MyApplication
 import com.example.go2life.databinding.LayoutBottomCommentAlertBinding
 import com.example.go2life.databinding.LayoutBottomCommentsBinding
-import com.example.go2life.model.home.Usercomment
-import com.example.go2life.model.postDetail.Body
-import com.example.go2life.model.postDetail.PostPramModel
-import com.example.go2life.model.postLikeUserList.postLikedPramModel
-import com.example.go2life.model.postlikeComment.postLikePramModel
-import com.example.go2life.model.postunlike.PostUnlikePramModel
+import com.example.go2life.model.comment.deleteComment.deleteCommentPramModel
+import com.example.go2life.model.comment.postDetail.Body
+import com.example.go2life.model.comment.postDetail.PostPramModel
+import com.example.go2life.model.comment.postLikeUserList.postLikedPramModel
+import com.example.go2life.model.comment.postlikeComment.postLikePramModel
+import com.example.go2life.model.comment.postunlike.PostUnlikePramModel
+import com.example.go2life.model.homeData.home.Usercomment
 import com.example.go2life.network.Repository
 import com.example.go2life.utils.Status.ERROR
 import com.example.go2life.utils.Status.LOADING
@@ -41,13 +42,14 @@ import kotlinx.coroutines.launch
 class CommentFragment : BaseFragment(), View.OnClickListener {
     lateinit var binding: LayoutBottomCommentsBinding
     private var postId: String = " "
+    private lateinit var  bottomSheetDialog : BottomSheetDialog
     lateinit var bindingAlert: LayoutBottomCommentAlertBinding
     private lateinit var userCommentAdapter: UserCommentAdapter
     private lateinit var commentHomeAdapter: CommentHomeAdapter
     private lateinit var postLikeUserListAdapter: PostLikeUserListAdapter
     private var isLiked: Int = 0
     private var mUserComment = ArrayList<Usercomment>()
-    private var mPostLikeUserList = ArrayList<com.example.go2life.model.postLikeUserList.Body>()
+    private var mPostLikeUserList = ArrayList<com.example.go2life.model.comment.postLikeUserList.Body>()
     private var mHomeComment = ArrayList<Body>()
 
     private val viewModel by viewModels<HomeViewModel> {
@@ -100,14 +102,14 @@ class CommentFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged", "InflateParams")
     private fun observer() {
         viewModel.resultCommentPost.observe(viewLifecycleOwner) { data ->
             data?.let {
                 when (data.status) {
                     SUCCESS -> {
                         viewLifecycleOwner.lifecycleScope.launch {
-                            delay(1000)
+                            delay(500)
                             MyApplication.hideLoader()
                         }
 
@@ -116,6 +118,9 @@ class CommentFragment : BaseFragment(), View.OnClickListener {
                             mUserComment.clear()
                             mUserComment.addAll(it.data!!.body.usercomment)
                             userCommentAdapter()
+                            mHomeComment.clear()
+                            mHomeComment.addAll(listOf(it.data.body))
+                            commentHomeAdapter()
                         } else {
                             mHomeComment.clear()
                             mHomeComment.addAll(listOf(it.data!!.body))
@@ -201,6 +206,25 @@ class CommentFragment : BaseFragment(), View.OnClickListener {
                 }
             }
         }
+        viewModel.resultDeleteComment.observe(viewLifecycleOwner) { data ->
+            data.let {
+                when (data.status) {
+                    SUCCESS -> {
+                        // Adding data to the mLikes list
+                        if (it.message == "Comment delete successfully")
+                        viewModel.onCommentHomePost(PostPramModel(postId))
+
+
+                    }
+
+                    LOADING -> {
+
+                    }
+
+                    ERROR -> handleError(data.message.toString())
+                }
+            }
+        }
     }
 
     private fun commentHomeAdapter() {
@@ -238,7 +262,7 @@ class CommentFragment : BaseFragment(), View.OnClickListener {
 
     private val callbackInfoMore = object : UserCommentAdapter.CommentPostedAdapterCallbacks {
         @SuppressLint("InflateParams")
-        override fun onMoreInfoClicked(postId: Int) {
+        override fun onMoreInfoClicked(commentId: Int, postId: Int) {
             val bottomSheetDialog = BottomSheetDialog(requireContext())
             val dialogView =
                 layoutInflater.inflate(R.layout.layout_bottom_comment_alert, null)
@@ -249,7 +273,8 @@ class CommentFragment : BaseFragment(), View.OnClickListener {
                 bottomSheetDialog.dismiss()
             }
             bindingAlert.tvDelete.setOnClickListener {
-                // Handle the delete action here
+               viewModel.onDeleteComment(deleteCommentPramModel(commentId.toString(),postId.toString(),"deleteComment"))
+                bottomSheetDialog.dismiss()
             }
 
         }

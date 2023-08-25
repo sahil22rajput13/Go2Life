@@ -14,7 +14,7 @@ import com.example.go2life.base.BaseActivity
 import com.example.go2life.base.GetObjects
 import com.example.go2life.base.MyApplication
 import com.example.go2life.databinding.ActivityDetailBinding
-import com.example.go2life.model.city.CityPramModel
+import com.example.go2life.model.auth.city.CityPramModel
 import com.example.go2life.utils.SharedPreference
 import com.example.go2life.utils.Status.ERROR
 import com.example.go2life.utils.Status.LOADING
