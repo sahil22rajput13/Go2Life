@@ -61,7 +61,7 @@ dependencies {
 //    tinkoff Indicator
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.5"
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
 //    mvvm
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
@@ -93,7 +93,7 @@ dependencies {
 
     //navigation Component
     def nav_version = "2.1.0-beta01"
-    def nav_version_ktx = "2.1.0-beta01"
+    def nav_version_ktx = '2.7.0'
     // For Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version_ktx"
@@ -107,15 +107,9 @@ dependencies {
 //firebase bom
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
 //Exo player
-    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.19.1'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.19.1'
-    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.19.1'
-//    Master Exo player
-
-
-    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.19.1'
+    implementation "androidx.media3:media3-exoplayer:1.1.1"
+    implementation "androidx.media3:media3-exoplayer-dash:1.1.1"
+    implementation "androidx.media3:media3-ui:1.1.1"
 }
 
 

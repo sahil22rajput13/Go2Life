@@ -37,97 +37,91 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun observer() {
-        viewModel.resultLogin.observe(this) {
-            it.let { data ->
-                when (data.status) {
-                    SUCCESS -> {
-                        MyApplication.hideLoader()
-                        val response = it?.data?.body
-                        GetObjects.preference.putString(
-                            SharedPreference.Key.TOKEN,
-                            response!!.token
-                        )
-                        GetObjects.preference.putString(
-                            SharedPreference.Key.USERDETIALS,
-                            response.userDetails.toString()
-                        )
-                        GetObjects.preference.putString(
-                            SharedPreference.Key.USERID,
-                            response.userDetails.id.toString()
-                        )
-                        if (response.userDetails.city.isNullOrEmpty()) {
-                            if (response.userDetails.county.toString().isNullOrEmpty())
-                                startActivity(
-                                    Intent(
-                                        this@LoginActivity,
-                                        DetailActivity::class.java
-                                    )
-                                )
-                        } else if (response.userDetails.profile_pic.toString().isNullOrEmpty()) {
-                            startActivity(Intent(this, JobSeekerActivity::class.java))
-                        } else {
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finishAffinity()
-                        }
-                    }
-
-                    LOADING -> {
-                        MyApplication.showLoader(this)
-                    }
-
-                    ERROR -> {
-                        MyApplication.hideLoader()
-                        toast(data.message.toString())
-                    }
-                }
-            }
-        }
-    }
-
-    private fun validation(): Boolean {
-        var isValid = true
-        if (TextUtils.isEmpty(binding.etEmail.text.toString())) {
-            binding.etEmail.error = "Required Field"
-        } else if (!Pattern.matches(
-                Patterns.EMAIL_ADDRESS.toRegex().toString(), binding
-                    .etEmail.text.toString()
-            )
-        ) {
-            isValid = false
-            binding.etEmail.error = "Enter a valid Email"
-        }
-        if (TextUtils.isEmpty(binding.etPassword.text.toString())) {
-            isValid = false
-            binding.etPassword.error = "Required Field"
-        }
-        return isValid
-    }
-
-
-    private fun spannableText() {
-
-        binding.tvSignup.setClickableAndUnderlinedText(
-            "Don't have any account ? Sign up",
-            "Sign up",
-            onClickAction = { startActivity(Intent(this, SignupActivity::class.java)) })
-    }
-
-    override fun onClick(p0: View?) {
-        when (p0) {
-            binding.btnLogin -> {
-                val deviceToken = Utility.getDeviceToken().toString()
-                if (validation()) {
-                    val email = binding.etEmail.text.toString()
-                    val password = binding.etPassword.text.toString()
-                    val body = LoginPramModel(
-                        deviceToken,
-                        deviceType = "android",
-                        email,
-                        password
+        viewModel.resultLogin.observe(this) { data ->
+            when (data.status) {
+                SUCCESS -> {
+                    MyApplication.hideLoader()
+                    val response = data?.data?.body
+                    GetObjects.preference.putString(
+                        SharedPreference.Key.TOKEN,
+                        response!!.token
                     )
-                    viewModel.onLogin(body)
+                    GetObjects.preference.putString(
+                        SharedPreference.Key.USERDETIALS,
+                        response.userDetails.toString()
+                    )
+                    GetObjects.preference.putString(
+                        SharedPreference.Key.USERID,
+                        response.userDetails.id.toString()
+                    )
+                    if (response.userDetails.city.isEmpty() && response.userDetails.county.toString()
+                            .isEmpty()
+                    ) {
+                        startActivity(Intent(this@LoginActivity, DetailActivity::class.java))
+                    } else if (response.userDetails.profile_pic.toString().isEmpty()) {
+                        startActivity(Intent(this, JobSeekerActivity::class.java))
+                    }  else if  (GetObjects.preference.getString(SharedPreference.Key.USERID) != ""){
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finishAffinity()
+                    }
+                }
+
+                LOADING -> {
+                    MyApplication.showLoader(this)
+                }
+
+                ERROR -> {
+                    MyApplication.hideLoader()
+                    toast(data.message.toString())
                 }
             }
         }
+}
+
+private fun validation(): Boolean {
+    var isValid = true
+    if (TextUtils.isEmpty(binding.etEmail.text.toString())) {
+        binding.etEmail.error = "Required Field"
+    } else if (!Pattern.matches(
+            Patterns.EMAIL_ADDRESS.toRegex().toString(), binding
+                .etEmail.text.toString()
+        )
+    ) {
+        isValid = false
+        binding.etEmail.error = "Enter a valid Email"
     }
+    if (TextUtils.isEmpty(binding.etPassword.text.toString())) {
+        isValid = false
+        binding.etPassword.error = "Required Field"
+    }
+    return isValid
+}
+
+
+private fun spannableText() {
+
+    binding.tvSignup.setClickableAndUnderlinedText(
+        "Don't have any account ? Sign up",
+        "Sign up",
+        onClickAction = { startActivity(Intent(this, SignupActivity::class.java)) })
+}
+
+override fun onClick(p0: View?) {
+    when (p0) {
+        binding.btnLogin -> {
+            val deviceToken = Utility.getDeviceToken().toString()
+            if (validation()) {
+                val email = binding.etEmail.text.toString()
+                val password = binding.etPassword.text.toString()
+                val body = LoginPramModel(
+                    deviceToken,
+                    deviceType = "android",
+                    email,
+                    password
+                )
+                viewModel.onLogin(body)
+            }
+        }
+    }
+}
 }

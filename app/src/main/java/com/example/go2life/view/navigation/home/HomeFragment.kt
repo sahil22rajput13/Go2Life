@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.go2life.R
 import com.example.go2life.adapter.homeAdapter.HomeFragmentAdapter
 import com.example.go2life.base.BaseFragment
@@ -30,12 +31,14 @@ import com.example.go2life.viewmodels.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
+
 class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding? = null
     var postIdUser: Int = 0
     lateinit var bindingAlert: LayoutBottomCommentAlertBinding
     private lateinit var homeFragmentAdapter: HomeFragmentAdapter
     lateinit var notificationService: NotificationService
+    lateinit var mRecyclerView:RecyclerView
     private val viewModel by viewModels<HomeViewModel> {
         ViewModelFactory(application, repository)
     }
@@ -72,6 +75,7 @@ class HomeFragment : BaseFragment() {
                     homeFragmentAdapter.submitData(it)
                 }
             }
+
     }
 
     private val callbackHome = object : HomeFragmentAdapter.HomeFragmentRecyclerViewCallback {
@@ -119,6 +123,7 @@ class HomeFragment : BaseFragment() {
 
         }
     }
+
 
     override fun onResume() {
         super.onResume()

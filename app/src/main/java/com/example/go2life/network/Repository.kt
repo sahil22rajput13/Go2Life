@@ -23,6 +23,13 @@ import com.example.go2life.model.comment.postunlike.PostUnlikePramModel
 import com.example.go2life.model.comment.postunlike.PostUnlikeResponse
 import com.example.go2life.model.homeData.getNotification.getNotificationResponse
 import com.example.go2life.model.homeData.getNotification.notificationRead.notificationReadResponse
+import com.example.go2life.model.homeData.getReels.getReelsResponse
+import com.example.go2life.model.reels.commentReels.commentReelsPramModel
+import com.example.go2life.model.reels.commentReels.commentReelsResponse
+import com.example.go2life.model.reels.getReelcomment.getReelcommentPramModel
+import com.example.go2life.model.reels.getReelcomment.getReelcommentResponse
+import com.example.go2life.model.reels.likeUnlikeReels.likeUnlikeReelsPramModel
+import com.example.go2life.model.reels.likeUnlikeReels.likeUnlikeReelsResponse
 import retrofit2.Response
 
 class Repository {
@@ -80,4 +87,18 @@ class Repository {
         return getApi.onNotificationRead(notification_id)
     }
 
+    suspend fun onGetReels(): Response<getReelsResponse> {
+        return getApi.onGetReels()
+    }
+    suspend fun onLikeUnlikeReels(body: likeUnlikeReelsPramModel): Response<likeUnlikeReelsResponse> {
+        return getApi.onLikeUnlikeReels(body)
+    }
+
+    suspend fun onGetReelcomment(body: getReelcommentPramModel): Response<getReelcommentResponse> {
+        return getApi.onGetReelcomment(body)
+    }
+
+    suspend fun onCommentReels(body: commentReelsPramModel): Response<commentReelsResponse> {
+        return getApi.onCommentReels(body)
+    }
 }

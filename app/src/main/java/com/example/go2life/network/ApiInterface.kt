@@ -23,8 +23,15 @@ import com.example.go2life.model.comment.postunlike.PostUnlikePramModel
 import com.example.go2life.model.comment.postunlike.PostUnlikeResponse
 import com.example.go2life.model.homeData.getNotification.getNotificationResponse
 import com.example.go2life.model.homeData.getNotification.notificationRead.notificationReadResponse
+import com.example.go2life.model.homeData.getReels.getReelsResponse
 import com.example.go2life.model.homeData.home.HomePramModel
 import com.example.go2life.model.homeData.home.HomeResponse
+import com.example.go2life.model.reels.commentReels.commentReelsPramModel
+import com.example.go2life.model.reels.commentReels.commentReelsResponse
+import com.example.go2life.model.reels.getReelcomment.getReelcommentPramModel
+import com.example.go2life.model.reels.getReelcomment.getReelcommentResponse
+import com.example.go2life.model.reels.likeUnlikeReels.likeUnlikeReelsPramModel
+import com.example.go2life.model.reels.likeUnlikeReels.likeUnlikeReelsResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -74,4 +81,14 @@ interface ApiInterface {
     @GET("users/notificationRead")
     suspend fun onNotificationRead(@Query("notification_id") notification_id: String?): Response<notificationReadResponse>
 
+    @GET("app/v2/reels/getReels")
+    suspend fun onGetReels(): Response<getReelsResponse>
+    @POST("users/likeUnlikeReels")
+    suspend fun onLikeUnlikeReels(@Body body: likeUnlikeReelsPramModel): Response<likeUnlikeReelsResponse>
+
+    @POST("users/getReelcomment")
+    suspend fun onGetReelcomment(@Body body: getReelcommentPramModel): Response<getReelcommentResponse>
+
+    @POST("users/commentReels")
+    suspend fun onCommentReels(@Body body: commentReelsPramModel): Response<commentReelsResponse>
 }

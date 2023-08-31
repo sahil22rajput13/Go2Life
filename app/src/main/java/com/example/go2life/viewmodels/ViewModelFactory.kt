@@ -15,9 +15,15 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(AuthViewModel::class.java) -> {
                 return AuthViewModel(application, repository) as T
             }
+
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 return HomeViewModel(application, repository) as T
             }
+
+            modelClass.isAssignableFrom(ReelViewModel::class.java) -> {
+                return ReelViewModel(application, repository) as T
+            }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }
 
