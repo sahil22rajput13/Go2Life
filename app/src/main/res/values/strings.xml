@@ -66,4 +66,16 @@
     <string name="cancel">Cancel</string>
     <string name="clear_all">Clear All</string>
     <string name="comment_here">Comment here...</string>
+    <string name="camera_permission_denied">Camera Permission Denied</string>
+    <string name="storage_permission_denied">Storage Permission Denied</string>
+    <string name="camera_permission_denied_message">Camera permission is required to access the camera feature. Please grant the permission in the app settings.</string>
+    <string name="storage_permission_denied_message">Storage permission is required to access the Storage feature. Please grant the permission in the app settings.</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="camera_permission_rationale">Camera permission is required to take photos and videos. Please grant the permission to proceed.</string>
+    <string name="storage_permission_rationale">Storage permission is required to use photos and videos. Please grant the permission to proceed.</string>
+    <string name="record">Record</string>
+    <string name="retake">Retake</string>
+    <string name="use_video">Use Video</string>
+    <string name="_90_00">00:90</string>
+
 </resources>

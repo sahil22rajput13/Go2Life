@@ -26,8 +26,6 @@ class ReelsFragmentViewPager(
     val lifecycle: LifecycleCoroutineScope,
     val callbacks: ReelsFragmentViewPagerCallback
 ) : RecyclerView.Adapter<ReelsFragmentViewPager.ViewHolder>() {
-
-    var commentSize = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemsReelsFragmentBinding.inflate(
@@ -42,15 +40,19 @@ class ReelsFragmentViewPager(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val videoAct = body[position]
         holder.setDataVideo(videoAct)
+//        <---------Broadcast Receiver--------->
         val filter = IntentFilter(BODY_LIST_CHANGED_ACTION)
         context.registerReceiver(holder.commentBroadcastReceiver, filter)
 
     }
+
+    //    <---------Broadcast Receiver END--------->
+//    <---------Broadcast Receiver--------->
     override fun onViewRecycled(holder: ViewHolder) {
         context.unregisterReceiver(holder.commentBroadcastReceiver)
         super.onViewRecycled(holder)
     }
-
+//    <---------Broadcast Receiver END--------->
 
 
     override fun getItemCount(): Int {
@@ -61,6 +63,7 @@ class ReelsFragmentViewPager(
         RecyclerView.ViewHolder(binding.root) {
         private var isMuted = false
 
+        //                       <---------Broadcast Receiver--------->
         val commentBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent?.action == BODY_LIST_CHANGED_ACTION) {
@@ -74,13 +77,14 @@ class ReelsFragmentViewPager(
             }
         }
 
-
+        //        <---------Broadcast Receiver END--------->
         fun setDataVideo(videoAct: Body) = with(binding) {
             videoView.setVideoPath(videoAct.videourl)
             thumbnailImageView.visible()
             Glide.with(context).load(videoAct.userdata.profile_pic).placeholder(R.drawable.job_img1)
                 .into(ivProfileReel)
             tvDescriptionReel.text = videoAct.description
+            tvNameReel.text = videoAct.userdata.first_name
             setupLikeCommentCounts(videoAct)
             setupLikeButton(videoAct)
             Glide.with(context).load(videoAct.video_thum).into(thumbnailImageView)
@@ -90,6 +94,9 @@ class ReelsFragmentViewPager(
                     videoAct.id,
                     type = 0
                 )
+            }
+            ivCameraView.setOnClickListener {
+                callbacks.onCameraClick(videoAct.id)
             }
             videoView.setOnPreparedListener { mediaPlayer ->
                 loadingIndicator.visibility = View.GONE
@@ -180,6 +187,7 @@ class ReelsFragmentViewPager(
     interface ReelsFragmentViewPagerCallback {
         fun onItemClick(id: Int, type: Int)
         fun onCommentClick(id: Int, type: Int)
+        fun onCameraClick(id: Int)
     }
 
     companion object {

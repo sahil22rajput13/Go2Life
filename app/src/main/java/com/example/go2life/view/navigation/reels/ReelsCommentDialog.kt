@@ -17,7 +17,6 @@ import com.example.go2life.network.Repository
 import com.example.go2life.utils.Status.ERROR
 import com.example.go2life.utils.Status.LOADING
 import com.example.go2life.utils.Status.SUCCESS
-import com.example.go2life.utils.toast
 import com.example.go2life.viewmodels.ReelViewModel
 import com.example.go2life.viewmodels.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -61,7 +60,6 @@ class ReelsCommentDialog : BottomSheetDialogFragment(), View.OnClickListener {
                 )
             )
             binding.etReelComment.text?.clear()
-            requireContext().toast(mList.size.toString())
             // After posting the comment, send a broadcast to notify the receiver
 
         }
@@ -79,7 +77,6 @@ class ReelsCommentDialog : BottomSheetDialogFragment(), View.OnClickListener {
                     mList.clear()
                     mList.addAll(result.data?.body.orEmpty())
                     mList.size.toString()
-                    requireContext().toast(mList.size.toString())
                     sortCommentedReelsList()
                     initCommentedReelsAdapter()
 

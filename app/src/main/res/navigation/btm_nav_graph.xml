@@ -27,7 +27,11 @@
         android:id="@+id/reelsFragment"
         android:name="com.example.go2life.view.navigation.reels.ReelsFragment"
         android:label="fragment_reels"
-        tools:layout="@layout/fragment_reels" />
+        tools:layout="@layout/fragment_reels" >
+        <action
+            android:id="@+id/action_reelsFragment_to_customReelsCameraFragment"
+            app:destination="@id/customReelsCameraFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.go2life.view.navigation.home.HomeFragment"
@@ -50,4 +54,17 @@
         tools:layout="@layout/layout_get_notification"
         android:name="com.example.go2life.view.navigation.home.NotificationFragment"
         android:label="NotificationFragment" />
+    <fragment
+        android:id="@+id/customReelsCameraFragment"
+        android:name="com.example.go2life.view.navigation.reels.CustomReelsCameraFragment"
+        android:label="CustomReelsCameraFragment" >
+        <action
+            android:id="@+id/action_customReelsCameraFragment_to_previewReelsCamera"
+            app:destination="@id/previewReelsCamera" />
+    </fragment>
+    <fragment
+        android:id="@+id/previewReelsCamera"
+        android:name="com.example.go2life.view.navigation.reels.PreviewReelsCamera"
+        android:label="PreviewReelsCamera" />
+
 </navigation>

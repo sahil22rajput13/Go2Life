@@ -1,4 +1,4 @@
-package com.example.go2life.adapter
+package com.example.go2life.adapter.chatsAdapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -17,8 +17,7 @@ class ChatsFragmentRecyclerView(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemChatsFragmentBinding.inflate(inflater, parent, false)
+        val binding = ItemChatsFragmentBinding.inflate( LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
